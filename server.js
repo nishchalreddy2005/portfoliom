@@ -65,6 +65,11 @@ const chatLimiter = rateLimit({
 app.use('/api/auth/login', loginLimiter);
 app.use('/api/chat', chatLimiter);
 
+// --- Health Check Route (Root) ---
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Portfolio Backend API is running.', endpoints: ['/api/content', '/api/internships', '/api/projects', '/api/insights', '/api/education', '/api/achievements'] });
+});
+
 // --- Authentication Middleware ---
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -382,6 +387,12 @@ app.post('/api/auth/setup', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Only start listening when running locally (not on Vercel serverless)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export for Vercel serverless
+export default app;
