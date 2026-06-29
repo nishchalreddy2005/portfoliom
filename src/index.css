@@ -7,21 +7,42 @@
   --font-syne: "Syne", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-primary-dark: #080808;
-  --color-accent-blue: #2563eb;
-  --color-accent-pink: #f472b6;
+  --color-primary-dark: #050505;
+  --color-accent-blue: #dfba6b;  /* Warm Champagne Gold */
+  --color-accent-pink: #d4af37;  /* Metallic Gold */
 }
 
 /* Custom Scrollbars & Utilities */
 @layer base {
   html, body {
-    background-color: #080808;
+    background-color: #050505;
     color: #f3f4f6;
     scroll-behavior: smooth;
     font-family: var(--font-sans);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+  }
+
+  /* Premium Gold Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050505;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #dfba6b;
+  }
+
+  /* Premium Selection highlight in gold */
+  ::selection {
+    background-color: rgba(212, 175, 55, 0.25);
+    color: #ffffff;
   }
 }
 
@@ -39,50 +60,55 @@
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 25s linear infinite;
+  animation: marquee 60s linear infinite;
 }
 
 .animate-marquee-reverse {
   display: flex;
   width: max-content;
-  animation: marquee-reverse 25s linear infinite;
+  animation: marquee-reverse 60s linear infinite;
 }
 
-/* Smooth cursor visual style */
+/* Premium smooth glowing gold cursor visual style */
 .custom-cursor {
-  width: 12px;
-  height: 12px;
-  background-color: #ffffff;
+  width: 10px;
+  height: 10px;
+  background-color: #d4af37;
   border-radius: 50%;
   position: fixed;
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 9999;
   transition: width 0.2s, height 0.2s, background-color 0.2s;
-  mix-blend-mode: difference;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
 }
 
 .custom-cursor-hover {
-  width: 72px;
-  height: 72px;
-  background-color: rgba(255, 255, 255, 0.9);
+  width: 56px;
+  height: 56px;
+  background-color: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
 }
 
+/* Gold wireframe grid background */
 .grid-bg {
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(212, 175, 55, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
 }
 
-/* Text stroke for large headers */
+/* Text stroke for large outline headers in gold */
 .text-stroke-white {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(212, 175, 55, 0.7);
+  color: rgba(212, 175, 55, 0.15);
+  transition: -webkit-text-stroke 0.3s ease, color 0.3s ease;
 }
 
 .text-stroke-white:hover {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+  -webkit-text-stroke: 1.5px rgba(212, 175, 55, 0.95);
+  color: rgba(212, 175, 55, 0.3);
 }
 
 /* Blur backdrop overlay */
@@ -90,3 +116,387 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+
+/* Premium Gold Text Gradient with Shimmer */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.text-gradient-gold {
+  background: linear-gradient(
+    -45deg,
+    #aa7700 0%,
+    #d4af37 25%,
+    #fff8dc 50%,
+    #d4af37 75%,
+    #aa7700 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 6s linear infinite;
+}
+
+.bg-gradient-gold {
+  background: linear-gradient(135deg, #aa7700, #d4af37, #fff8dc, #d4af37);
+  background-size: 200% 200%;
+  animation: shimmer 6s ease infinite;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shine {
+  animation: shine 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ====================================================== */
+/* SCALED & ADVANCED CHATBOT UI STYLES                    */
+/* ====================================================== */
+#pcb-root {
+  --bg: #0B0D10;
+  --panel-glass: rgba(18, 20, 25, 0.78);
+  --panel-glass-2: rgba(28, 31, 38, 0.6);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(224, 178, 78, 0.45);
+  --accent: #E0B24E;
+  --accent-soft: rgba(224, 178, 78, 0.16);
+  --accent-soft-2: rgba(224, 178, 78, 0.32);
+  --text: #F3F1EB;
+  --muted: #9296A0;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  font-family: var(--font-body);
+}
+
+/* ---- Launcher with ambient ping rings ---- */
+.pcb-launcher-wrap {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.pcb-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  animation: pcb-ping-anim 2.6s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  pointer-events: none;
+}
+.pcb-ping--delay { animation-delay: 1.3s; }
+
+@keyframes pcb-ping-anim {
+  0%   { transform: scale(0.85); opacity: 0.55; }
+  70%  { transform: scale(1.65); opacity: 0; }
+  100% { transform: scale(1.65); opacity: 0; }
+}
+
+#pcb-launcher {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid var(--border-glow);
+  background: radial-gradient(circle at 35% 30%, #F4D589, var(--accent) 60%, #B9893A 100%);
+  color: #1A1408;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  animation: pcb-breathe 3.4s ease-in-out infinite;
+  transition: transform 0.25s var(--ease-spring), filter 0.25s ease;
+}
+#pcb-launcher svg { width: 24px; height: 24px; }
+#pcb-launcher:hover {
+  transform: scale(1.08);
+  filter: brightness(1.08);
+}
+#pcb-launcher:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@keyframes pcb-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(224,178,78,0.35), 0 6px 24px rgba(224,178,78,0.25); }
+  50%      { box-shadow: 0 0 0 10px rgba(224,178,78,0.06), 0 10px 32px rgba(224,178,78,0.4); }
+}
+
+/* ---- Panel ---- */
+#pcb-panel {
+  position: absolute;
+  bottom: 76px;
+  right: 0;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  height: 500px;
+  max-height: 72vh;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(165deg, var(--panel-glass-2), var(--panel-glass));
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.02) inset;
+  transform-origin: bottom right;
+
+  transform: scale(0.4) translateY(18px);
+  opacity: 0;
+  filter: blur(14px);
+  pointer-events: none;
+  transition:
+    transform 0.5s var(--ease-spring),
+    opacity 0.32s ease,
+    filter 0.4s ease;
+}
+
+#pcb-panel.pcb-open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  filter: blur(0);
+  pointer-events: auto;
+}
+
+.pcb-glow-border {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px var(--border-glow), inset 0 1px 24px rgba(224,178,78,0.06);
+  opacity: 0.7;
+}
+
+/* ---- Header ---- */
+.pcb-header {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+.pcb-header-left { display: flex; align-items: center; gap: 10px; }
+.pcb-status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px 2px var(--accent-soft-2);
+  flex-shrink: 0;
+  animation: pcb-dot-pulse 2s ease-in-out infinite;
+}
+@keyframes pcb-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.pcb-header-title {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+}
+.pcb-header-sub {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-align: left;
+}
+
+/* ---- Log / messages ---- */
+.pcb-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-glow) transparent;
+}
+.pcb-log::-webkit-scrollbar { width: 6px; }
+.pcb-log::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 3px; }
+
+.pcb-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 88%;
+
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  transition: opacity 0.45s ease, transform 0.45s var(--ease-spring);
+}
+.pcb-entry.pcb-msg-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.pcb-entry--user { align-self: flex-end; align-items: flex-end; }
+.pcb-entry--bot { align-self: flex-start; align-items: flex-start; }
+
+.pcb-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.pcb-tag--user { color: var(--accent); }
+
+.pcb-bubble {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 13px;
+  font-size: 0.87rem;
+  line-height: 1.55;
+  position: relative;
+  text-align: left;
+}
+.pcb-entry--user .pcb-bubble {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft-2);
+}
+
+/* glow-trail flash on arrival */
+.pcb-entry.pcb-msg-glow .pcb-bubble {
+  animation: pcb-arrive-glow 0.9s ease-out;
+}
+@keyframes pcb-arrive-glow {
+  0% { box-shadow: 0 0 0 0 rgba(224,178,78,0.5); }
+  100% { box-shadow: 0 0 0 14px rgba(224,178,78,0); }
+}
+
+/* ---- Thinking / shimmer indicator ---- */
+.pcb-thinking {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, var(--muted) 0%, var(--accent) 50%, var(--muted) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: pcb-shimmer 1.6s linear infinite;
+}
+@keyframes pcb-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---- Input row ---- */
+.pcb-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  background: rgba(255,255,255,0.015);
+}
+.pcb-prompt-glyph {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+#pcb-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.87rem;
+  padding: 6px 0;
+}
+#pcb-input::placeholder { color: var(--muted); }
+
+.pcb-input-row {
+  position: relative;
+  transition: box-shadow 0.25s ease;
+}
+.pcb-input-row.pcb-focused {
+  box-shadow: inset 0 1px 0 var(--accent-soft-2);
+}
+
+#pcb-send {
+  position: relative;
+  overflow: hidden;
+  background: var(--accent);
+  border: none;
+  color: #1A1408;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.18s var(--ease-spring), filter 0.18s ease;
+}
+#pcb-send svg { width: 16px; height: 16px; }
+#pcb-send:hover { filter: brightness(1.1); }
+#pcb-send:active { transform: scale(0.88) translateX(2px); }
+#pcb-send:disabled { opacity: 0.45; cursor: default; }
+
+.pcb-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.55);
+  transform: scale(0);
+  animation: pcb-ripple-anim 0.55s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes pcb-ripple-anim {
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 480px) {
+  #pcb-panel {
+    width: calc(100vw - 24px);
+    right: -4px;
+    height: 70vh;
+  }
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .pcb-ping { display: none; }
+  #pcb-launcher { animation: none; }
+  .pcb-status-dot { animation: none; }
+  #pcb-panel { transition: opacity 0.2s ease; transform: none !important; filter: none !important; }
+  .pcb-entry { transition: opacity 0.2s ease; transform: none !important; }
+  .pcb-thinking { animation: none; color: var(--accent); }
+  .pcb-entry.pcb-msg-glow .pcb-bubble { animation: none; }
+}
+
+

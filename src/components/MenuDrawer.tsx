@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, ArrowRight, Compass, Mail, Phone, MapPin } from "lucide-react";
 import { SOCIAL_LINKS } from "../data";
@@ -6,16 +7,70 @@ interface MenuDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   activeSection: string;
+  toggles?: Record<string, boolean>;
 }
 
-export default function MenuDrawer({ isOpen, onClose, activeSection }: MenuDrawerProps) {
-  const menuItems = [
-    { num: "01", name: "Home", target: "home" },
-    { num: "02", name: "Experiences", target: "services" },
-    { num: "03", name: "About", target: "about" },
-    {num: "04", name: "Projects", target: "projects"},
-    { num: "05", name: "Contact", target: "contact" }
+export default function MenuDrawer({ isOpen, onClose, activeSection, toggles = { experience: true, projects: true } }: MenuDrawerProps) {
+  const [socialLinks, setSocialLinks] = useState(SOCIAL_LINKS);
+  const [contactEmail, setContactEmail] = useState("gvrnishchalreddy@gmail.com");
+  const [contactPhone, setContactPhone] = useState("+91 7013612696");
+  const [contactAddress, setContactAddress] = useState("Hyderabad, Telangana, India");
+  const [orbUrl, setOrbUrl] = useState("");
+
+  const isVideoUrl = (url: string) => {
+    if (!url) return false;
+    return /\.(mp4|webm|ogg|mov|avi)($|\?)/i.test(url) || url.includes("/video/") || url.includes("video");
+  };
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/content')
+      .then(res => res.json())
+      .then((data: any[]) => {
+        if (Array.isArray(data)) {
+          const getVal = (key: string, def: string) => {
+            const found = data.find(item => item.key === key);
+            return found && found.value !== undefined ? found.value : def;
+          };
+
+          setContactEmail(getVal('contact_email', 'gvrnishchalreddy@gmail.com'));
+          setContactPhone(getVal('contact_phone', '+91 7013612696'));
+          setContactAddress(getVal('contact_address', 'Hyderabad, Telangana, India'));
+          setOrbUrl(getVal('hero_orb_url', ''));
+
+          const updated = SOCIAL_LINKS.map(link => {
+            if (link.name === "LinkedIn") {
+              const found = data.find(item => item.key === 'hero_linkedin_url');
+              if (found && found.value) return { ...link, url: found.value };
+            }
+            if (link.name === "GitHub") {
+              const found = data.find(item => item.key === 'hero_github_url');
+              if (found && found.value) return { ...link, url: found.value };
+            }
+            if (link.name === "E-Mail") {
+              const found = data.find(item => item.key === 'contact_email');
+              if (found && found.value) return { ...link, url: `mailto:${found.value}` };
+            }
+            return link;
+          });
+          setSocialLinks(updated);
+        }
+      })
+      .catch(err => console.error("Error loading social links in MenuDrawer:", err));
+  }, []);
+
+  const baseMenuItems = [
+    { name: "Home", target: "home" },
+    ...(toggles.experience !== false ? [{ name: "Experiences", target: "services" }] : []),
+    { name: "About", target: "about" },
+    ...(toggles.projects !== false ? [{ name: "Projects", target: "projects" }] : []),
+    { name: "Contact", target: "contact" }
   ];
+
+  const menuItems = baseMenuItems.map((item, index) => ({
+    num: `0${index + 1}`,
+    name: item.name,
+    target: item.target
+  }));
 
   const handleLinkClick = (target: string) => {
     onClose();
@@ -82,7 +137,7 @@ export default function MenuDrawer({ isOpen, onClose, activeSection }: MenuDrawe
             <div className="flex items-center justify-between w-full border-b border-white/5 pb-6">
               <div className="flex items-center gap-2">
                 <Compass className="h-5 w-5 text-accent-pink animate-spin-slow" />
-                <span className="font-display font-bold text-lg tracking-wider">ANJANA SHREYA</span>
+                <span className="font-display font-bold text-lg tracking-wider">G V R NISHCHAL REDDY</span>
                 <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded uppercase font-mono tracking-widest text-neutral-400">PORTFOLIO</span>
               </div>
               <div className="text-right text-xs text-neutral-400 hidden sm:block font-mono">
@@ -103,7 +158,7 @@ export default function MenuDrawer({ isOpen, onClose, activeSection }: MenuDrawe
               {/* Left Column: Liquid metallic orb element */}
               <div className="hidden lg:flex lg:col-span-4 justify-center items-center relative">
                 <motion.div 
-                  className="absolute inset-0 bg-blue-500/10 rounded-full blur-3xl"
+                  className="absolute inset-0 bg-accent-pink/10 rounded-full blur-3xl"
                   animate={{
                     scale: [1, 1.2, 0.9, 1],
                   }}
@@ -125,13 +180,24 @@ export default function MenuDrawer({ isOpen, onClose, activeSection }: MenuDrawe
                   }}
                   className="relative z-10 w-72 h-72 xl:w-80 xl:h-80 rounded-full overflow-hidden border border-white/10 shadow-2xl"
                 >
-                  <img
-                    src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop"
-                    alt="Iridescent Liquid Metallic Abstract Fluid"
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover saturate-125 hover:scale-110 transition-transform duration-500 cursor-pointer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/80 via-transparent to-transparent pointer-events-none" />
+                  {isVideoUrl(orbUrl) ? (
+                    <video
+                      src={orbUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover saturate-125 hover:scale-110 transition-transform duration-500 cursor-pointer"
+                    />
+                  ) : (
+                    <img
+                      src={orbUrl || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop"}
+                      alt="Iridescent Liquid Metallic Abstract Fluid"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover saturate-125 hover:scale-110 transition-transform duration-500 cursor-pointer"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-linear-to-t from-primary-dark/80 via-transparent to-transparent pointer-events-none" />
                 </motion.div>
               </div>
 
@@ -166,24 +232,24 @@ export default function MenuDrawer({ isOpen, onClose, activeSection }: MenuDrawe
               <div className="col-span-1 lg:col-span-3 flex flex-col space-y-8 pl-0 lg:pl-10 lg:border-l border-white/5 py-2">
                 <div>
                   <h4 className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase mb-3">Get in Touch</h4>
-                  <a href="mailto:chitturianjana@gmail.com" className="group flex items-center gap-2 hover:text-accent-pink transition-colors duration-300 font-medium my-1 mb-4">
+                  <a href={`mailto:${contactEmail}`} className="group flex items-center gap-2 hover:text-accent-pink transition-colors duration-300 font-medium my-1 mb-4">
                     <Mail className="h-4 w-4 text-neutral-500 group-hover:text-accent-pink" />
-                    <span>chitturianjana@gmail.com</span>
+                    <span>{contactEmail}</span>
                   </a>
-                  <a href="tel:+917013612696" className="group flex items-center gap-2 hover:text-accent-blue transition-colors duration-300 font-medium my-1 mb-4">
+                  <a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="group flex items-center gap-2 hover:text-accent-blue transition-colors duration-300 font-medium my-1 mb-4">
                     <Phone className="h-4 w-4 text-neutral-500 group-hover:text-accent-blue" />
-                    <span>+91 7013612696</span>
+                    <span>{contactPhone}</span>
                   </a>
                   <div className="flex gap-2 text-sm text-neutral-300 font-light leading-relaxed">
                     <MapPin className="h-4 w-4 text-neutral-500 shrink-0 mt-0.5" />
-                    <p>Hyderabad,<br />Telangana, India</p>
+                    <p className="whitespace-pre-line">{contactAddress}</p>
                   </div>
                 </div>
 
                 <div>
                   <h4 className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase mb-3">Connect</h4>
                   <div className="grid grid-cols-2 gap-2 text-xs text-neutral-300">
-                    {SOCIAL_LINKS.map((link) => (
+                    {socialLinks.map((link) => (
                       <a
                         key={link.name}
                         href={link.url}
@@ -199,8 +265,8 @@ export default function MenuDrawer({ isOpen, onClose, activeSection }: MenuDrawe
 
             {/* Footer inside menu */}
             <div className="flex flex-col sm:flex-row items-center justify-between border-t border-white/5 pt-6 text-[10px] font-mono text-neutral-500 space-y-2 sm:space-y-0 w-full">
-              <div>MADE WITH ♡ BY ANJANA SHREYA</div>
-              <div>COPYRIGHT © 2026 ANJANA SHREYA. ALL RIGHTS RESERVED.</div>
+              <div>MADE WITH ♡ BY G V R NISHCHAL REDDY</div>
+              <div>COPYRIGHT © 2026 G V R NISHCHAL REDDY. ALL RIGHTS RESERVED.</div>
             </div>
           </motion.div>
         </motion.div>

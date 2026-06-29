@@ -11,48 +11,91 @@ import proj5 from "./assets/proj5.png";
 
 export const PROJECTS: Project[] = [
   {
-    id: "interactive-globe",
-    title: "WebGL Geographic Data Engine",
-    category: "WebGL / Three.js",
-    image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=1200&auto=format&fit=crop",
-    client: "Aether Solutions",
+    id: "kavachai",
+    title: "KavachAI — AI Enhanced Intrusion Detection System",
+    category: "AI",
+    image: proj1,
+    client: "Research Publication",
     year: "2025",
-    description: "A fun and quirky interactive 3D globe visualization supporting high-speed geographical telemetry queries, customized shader overlays, and realistic depth models.",
-    tags: ["Three.js", "React Three Fiber", "WebGL", "Tailwind CSS"],
-    demoUrl: "#"
+    description: "KavachAI is an intelligent intrusion detection platform developed as a Final Year Research Project to identify malicious network activities using advanced deep learning techniques. The system combines real-time network monitoring, AI-driven anomaly detection, and active network reconnaissance to provide early threat detection across enterprise environments.",
+    tags: ["React.js", "TypeScript", "Node.js", "Python", "Deep Learning", "Transformer", "VAE"],
+    demoUrl: "#",
+    githubUrl: "#",
+    featured: true,
+    badges: ["⭐ Featured Research Project", "🎓 Final Year Project", "📄 Conference Presented"],
+    metrics: ["96% Detection Accuracy", "4 AI Models", "Real-Time Monitoring", "Conference Presented"]
   },
   {
-    id: "audio-synthesizer",
-    title: "Web Audio Synthesizer Interface",
-    category: "Sound API / UI Motion",
-    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1200&auto=format&fit=crop",
-    client: "KINETIX Technical",
-    year: "2026",
-    description: "Sleek synthesizer control panel utilizing the Web Audio API with customizable wave generators, tactile knobs, and a real-time reactive canvas equalizer.",
-    tags: ["Web Audio API", "Framer Motion", "Canvas API", "JetBrains Mono"],
-    demoUrl: "#"
-  },
-  {
-    id: "analytics-builder",
-    title: "D3 High-Contrast Dashboard",
-    category: "D3 / Data Visuals",
-    image: "https://images.unsplash.com/photo-1473116763269-255415695f6b?q=80&w=1200&auto=format&fit=crop",
-    client: "Sands Estate Corp",
+    id: "decentralized-voting",
+    title: "Decentralized Voting System",
+    category: "Blockchain",
+    image: proj2,
+    client: "Independent System",
     year: "2025",
-    description: "Responsive dashboard environment utilizing black and white fine-art aesthetics, rendering high-speed telemetry lines, scatter plots, and interactive tooltips.",
-    tags: ["D3.js", "TypeScript", "Recharts", "SVG Grids"],
-    demoUrl: "#"
+    description: "A blockchain-powered electronic voting platform designed to ensure transparency, integrity, and trust in the electoral process. The system leverages Ethereum smart contracts to securely record votes on-chain, eliminating risks such as vote tampering, duplicate voting, and centralized manipulation.",
+    tags: ["React", "Vite", "Solidity", "Hardhat", "Ganache", "Ethereum", "MetaMask"],
+    demoUrl: "#",
+    githubUrl: "https://github.com/nishchalreddy2005/Online-Voting-System-using-blockchain"
   },
   {
-    id: "terminal-shell",
-    title: "React Terminal Sandbox",
-    category: "DevTools / System Visuals",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
-    client: "Fluidic Sound",
-    year: "2026",
-    description: "A functional, lightning-fast in-browser terminal interpreter supporting mock command scripts, visual performance logs, and responsive layout styling.",
-    tags: ["TypeScript", "Terminal Parsing", "Performance Profiling", "Figma Design"],
-    demoUrl: "#"
+    id: "electricity-billing",
+    title: "Electricity Billing D-App",
+    category: "Blockchain",
+    image: proj3,
+    client: "Utility DApp",
+    year: "2024",
+    description: "A decentralized electricity billing platform that utilizes blockchain smart contracts to securely manage billing records and transactions. The system ensures transparency, prevents record tampering, and provides a trusted environment for managing utility billing data.",
+    tags: ["React", "Vite", "Solidity", "Hardhat", "Ganache", "Ethereum", "MetaMask"],
+    demoUrl: "#",
+    githubUrl: "https://github.com/nishchalreddy2005/Online-Voting-System-using-blockchain"
+  },
+  {
+    id: "sri-friends-flavours",
+    title: "Sri Friends & Flavours Restaurant Management System",
+    category: "Full Stack",
+    image: proj4,
+    client: "Sri Friends & Flavours",
+    year: "2024",
+    description: "A real-world restaurant management solution developed to digitize and automate daily restaurant operations. The platform streamlines order management, customer interactions, record keeping, and business workflows, significantly reducing manual errors while improving operational efficiency.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js", "Express.js", "SQL"],
+    demoUrl: "https://srifriendsandflavours.vercel.app/",
+    githubUrl: "https://github.com/nishchalreddy2005/Sri-Friends-and-Flavours-Resturant-Website"
+  },
+  {
+    id: "checkit",
+    title: "CheckIT",
+    category: "Full Stack",
+    image: proj5,
+    client: "Productivity Tool",
+    year: "2023",
+    description: "A modern productivity and task management platform built to streamline personal and team workflows. The application features intelligent task scheduling, interactive calendar integration, reminder management, deadline tracking, and a dedicated focus mode with built-in music support.",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Express.js", "SQL"],
+    demoUrl: "#",
+    githubUrl: "https://github.com/nishchalreddy2005/CheckIt"
+  },
+  {
+    id: "student-counselling",
+    title: "Student Counselling Management System",
+    category: "Enterprise",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
+    client: "Academic Institution",
+    year: "2024",
+    description: "A comprehensive counselling management platform designed to help educational institutions manage student counselling operations efficiently. The system supports profile management, appointment scheduling, confidential communication, assessment tracking, progress monitoring, and analytical reporting.",
+    tags: ["React.js", "Node.js", "Express.js", "MongoDB", "REST API", "GraphQL"],
+    demoUrl: "#",
+    githubUrl: "https://github.com/nishchalreddy2005/student-counselling-management-system"
+  },
+  {
+    id: "student-feedback",
+    title: "Student Feedback & Evaluation System",
+    category: "Academic",
+    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1200&auto=format&fit=crop",
+    client: "Academic Analytics",
+    year: "2024",
+    description: "A web-based platform developed to enhance the feedback and evaluation process within educational institutions. The system enables structured feedback collection, faculty evaluation, academic performance assessment, and transparent communication between students and instructors.",
+    tags: ["JavaScript", "HTML", "CSS", "Java", "Spring Boot", "MySQL", "REST API"],
+    demoUrl: "#",
+    githubUrl: "#"
   }
 ];
 
@@ -155,53 +198,72 @@ export const INSIGHTS: Insight[] = [
 
 export const PROCESS_STEPS: ProcessStep[] = [
   {
-    id: "proj-blog",
+    id: "proj-kavachai",
     num: "01",
-    title: "BlogPage Website",
-    description: "A full-stack publishing and editorial workflow platform where users can submit articles, receive feedback, revise content, and publish through a structured admin moderation system. Features include JWT authentication, review workflows, email notifications, categorized content management, protected admin dashboards, and a fully responsive modern UI.",
-    details: ["React", "TypeScript", "SCSS", "NodeJs", "MongoDB"],
+    title: "KavachAI — AI Enhanced Intrusion Detection System",
+    description: "KavachAI is an intelligent intrusion detection platform developed as a Final Year Research Project to identify network threats. Using deep learning models (VAE, LSTM, Transformers) and a max-voting aggregator, the system achieves 96% detection accuracy alongside live monitoring and Nmap reconnaissance.",
+    details: ["React.js", "TypeScript", "Node.js", "Python", "Deep Learning", "VAE & LSTM"],
     image: proj1,
   },
   {
-    id: "proj-employee",
+    id: "proj-voting",
     num: "02",
-    title: "Employee Management and Monitering Portal",
-    description: "Developed an employee monitoring website which aims to provide a centralized platform to small organizations which saves time and provides user friendly approach",
-    details: ["NodeJS", "MongoDB", "ReactJS", "TypeScript", "REST APIs"],
-    image: proj3,
-  },
-  {
-    id: "proj-chatbot",
-    num: "03",
-    title: "Chatbot",
-    description: "Designed and implemented a user friendly chatbot interface with a sleek, responsive layout, enhancing user interaction and engagement.",
-    details: ["React", "JavaScript", "REST APIs"],
+    title: "Decentralized Voting System",
+    description: "A blockchain-powered electronic voting platform designed to ensure transparency, integrity, and trust in the electoral process. The system leverages Ethereum smart contracts to securely record votes on-chain, eliminating risks such as vote tampering, duplicate voting, and centralized manipulation.",
+    details: ["React", "Vite", "Solidity", "Hardhat", "Ethereum", "MetaMask"],
     image: proj2,
+    liveUrl: "https://github.com/nishchalreddy2005/Online-Voting-System-using-blockchain"
   },
   {
-    id: "proj-personal",
+    id: "proj-electricity",
+    num: "03",
+    title: "Electricity Billing D-App",
+    description: "A decentralized electricity billing platform that utilizes blockchain smart contracts to securely manage billing records and transactions. The system ensures transparency, prevents record tampering, and provides a trusted environment for managing utility billing data.",
+    details: ["React", "Vite", "Solidity", "Hardhat", "Ethereum", "MetaMask"],
+    image: proj3,
+    liveUrl: "https://github.com/nishchalreddy2005/Online-Voting-System-using-blockchain"
+  },
+  {
+    id: "proj-sri",
     num: "04",
-    title: "Personalized Website",
-    description: "Developed a personal website for a professor which showcases the professor's research work and provides information about their academic background. It also includes the couses, course structure and the course materials taught by the professor.",
-    details: ["HTML", "CSS", "JavaScript"],
+    title: "Sri Friends & Flavours Restaurant Management System",
+    description: "A real-world restaurant management solution developed to digitize and automate daily restaurant operations. The platform streamlines order management, customer interactions, record keeping, and business workflows, significantly reducing manual errors while improving operational efficiency.",
+    details: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js", "Express.js"],
     image: proj4,
-    liveUrl: "https://anjanashreya.github.io/Personal-Website/"
+    liveUrl: "https://srifriendsandflavours.vercel.app/"
   },
   {
-    id: "proj-iks",
+    id: "proj-checkit",
     num: "05",
-    title: "Website for Organisation of Researched Information",
-    description: "Developed a centralized website to organize and present all the information collected for the IKS project. The platform ensures structured data management and provides easy accessibility for users to explore resources.",
-    details: ["HTML", "CSS", "JavaScript"],
+    title: "CheckIT",
+    description: "A modern productivity and task management platform built to streamline personal and team workflows. The application features intelligent task scheduling, interactive calendar integration, reminder management, deadline tracking, and a dedicated focus mode with built-in music support.",
+    details: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Express.js", "SQL"],
     image: proj5,
-    liveUrl: "https://anjanashreya.github.io/webpage-iks/"
+    liveUrl: "https://github.com/nishchalreddy2005/CheckIt"
+  },
+  {
+    id: "proj-counselling",
+    num: "06",
+    title: "Student Counselling Management System",
+    description: "A comprehensive counselling management platform designed to help educational institutions manage student counselling operations efficiently. The system supports profile management, appointment scheduling, confidential communication, assessment tracking, progress monitoring, and analytical reporting.",
+    details: ["React.js", "Node.js", "Express.js", "MongoDB", "REST API", "GraphQL"],
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
+    liveUrl: "https://github.com/nishchalreddy2005/student-counselling-management-system"
+  },
+  {
+    id: "proj-feedback",
+    num: "07",
+    title: "Student Feedback & Evaluation System",
+    description: "A web-based platform developed to enhance the feedback and evaluation process within educational institutions. The system enables structured feedback collection, faculty evaluation, academic performance assessment, and transparent communication between students and instructors.",
+    details: ["JavaScript", "HTML", "CSS", "Java", "Spring Boot", "MySQL"],
+    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1200&auto=format&fit=crop"
   }
 ];
 
 export const SOCIAL_LINKS = [
-  { name: "LinkedIn", url: "https://www.linkedin.com/in/ch-s-anjana-shreya-68a74628a" },
-  { name: "GitHub", url: "https://github.com/AnjanaShreya" },
-  { name: "E-Mail", url: "mailto:chitturianjana@gmail.com"}
+  { name: "LinkedIn", url: "https://www.linkedin.com/in/gvrnishchalreddy" },
+  { name: "GitHub", url: "https://github.com/gvrnishchalreddy" },
+  { name: "E-Mail", url: "mailto:gvrnishchalreddy@gmail.com"}
 ];
 
 export interface EducationItem {

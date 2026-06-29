@@ -1,13 +1,81 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
-import { INTERNSHIPS } from "../data";
+import axios from "axios";
+
+const FALLBACK_INTERNSHIPS = [
+  {
+    id: "hivel-fulltim",
+    num: "01",
+    company: "Hivel",
+    role: "Frontend Developer",
+    duration: "Jun 2025 - Mar 2026",
+    details: [
+      "Built real-time, data-driven dashboards handling dynamic and streaming data in production environments using Material Icons.",
+      "Implemented efficient state management using Redux Toolkit (RTK Query) for scalable application flows.",
+      "Integrated GraphQL APIs, REST APIs, and WebSockets for real-time data synchronization.",
+      "Designed and optimized interactive data visualizations for performance and usability.",
+      "Wrote and maintained test cases to ensure application reliability and stability.",
+      "Debugged and resolved complex issues in production systems.",
+      "Contributed to complex, real-time interactive features including chatbot workflows and configuration-driven systems impacting overall application behavior."
+    ],
+    tags: ["React", "TypeScript", "NodeJS", "SCSS", "Redux Toolkit", "RTK Query", "GraphQL", "WebSockets", "Material UI", "HighCharts", "Rsuite", "Jest and RTL"],
+    order: 0
+  },
+  {
+    id: "intern-edgeforce-sem",
+    num: "02",
+    company: "Edgeforce Solutions",
+    role: "Frontend Developer Intern",
+    duration: "Jan 2025 - May 2025",
+    details: [
+      "Built responsive and high-performance frontend applications using React, focusing on usability and smooth user experience.",
+      "Developed and visualized real-time sensor data systems, processing live data from AWS-based systems.",
+      "Implemented data processing and event-detection logic for wearable-based tracking systems (timing, activity detection, user-device mapping).",
+      "Integrated frontend with backend services using REST APIs, with exposure to Node.js, MongoDB, and AWS serverless (Lambda, DynamoDB, S3)."
+    ],
+    tags: ["React", "ViteJS", "NodeJS", "MongoDB", "AWS Serverless", "REST APIs", "AWS S3"],
+    order: 1
+  },
+  {
+    id: "intern-edgeforce",
+    num: "03",
+    company: "Edgeforce Solutions",
+    role: "Frontend Developer Intern",
+    duration: "Jun 2024 - Sept 2024",
+    details: [
+      "Engineered dynamic analytics dashboards and robust administrator interfaces to manage sensor telemetry data, facilitating real-time tracking, retrieval, and trend analysis.",
+      "Developed a comprehensive military vehicle management and fleet status system featuring component-level lifespan, manufacturing date, and usage condition analysis.",
+      "Designed and implemented intelligent, priority-based automated alert systems to trigger immediate notifications for critical repairs, maintenance schedules, and fuel replenishment.",
+      "Built secure operational modules allowing administrators to seamlessly register new fleet units and log inspection details, maintenance logs, and parts replacement records."
+    ],
+    tags: ["React", "TypeScript", "ViteJS", "Recharts", "Tailwind CSS", "REST APIs", "Dynamic Dashboards"],
+    order: 2
+  }
+];
 
 export default function Services() {
   const [activeItem, setActiveItem] = useState<string | null>("hivel-fulltim");
+  const [internships, setInternships] = useState<any[]>(FALLBACK_INTERNSHIPS);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/api/internships')
+      .then(res => {
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          const sorted = res.data.sort((a: any, b: any) => a.order - b.order);
+          setInternships(sorted);
+          setActiveItem(sorted[0].id);
+        }
+      })
+      .catch(err => {
+        console.error("Error loading internships:", err);
+      });
+  }, []);
 
   const toggleItem = (id: string) => {
     setActiveItem(activeItem === id ? null : id);
   };
+
+  if (internships.length === 0) return null;
 
   return (
     <section
@@ -32,14 +100,15 @@ export default function Services() {
             </p>
           </div>
 
-          {/* Right Column: Numbered accord-list based on INTERNSHIPS data */}
+          {/* Right Column: Numbered accord-list based on internships data */}
           <div className="lg:col-span-7 flex flex-col divider-y divide-white/5 border-t border-white/5">
-            {INTERNSHIPS.map((intern) => {
+            {internships.map((intern, idx) => {
               const isOpen = activeItem === intern.id;
+              const displayNum = `0${idx + 1}`;
               return (
                 <div
                   key={intern.id}
-                  className={`border-b border-white/5 py-6 md:py-8 transition-all duration-300 text-left ${isOpen ? "bg-white/[0.01] px-4 rounded-b-md" : ""
+                  className={`border-b border-white/5 py-6 md:py-8 transition-all duration-300 text-left ${isOpen ? "glass-card px-4 md:px-8 rounded-xl my-4 border-transparent" : ""
                     }`}
                 >
                   <button
@@ -48,7 +117,7 @@ export default function Services() {
                   >
                     <div className="flex items-center gap-4 md:gap-8 grow">
                       <span className="font-mono text-xs sm:text-sm text-neutral-500 group-hover:text-accent-pink transition-colors">
-                        / {intern.num}
+                        / {displayNum}
                       </span>
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between grow gap-2 pr-2 sm:pr-8">
                         <div className="flex flex-col gap-1">
@@ -81,10 +150,10 @@ export default function Services() {
                       <div className="space-y-2">
                         <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500 block">// TECH STACK</span>
                         <div className="flex flex-wrap gap-1.5">
-                          {intern.tags.map((tag) => (
+                          {intern.tags.map((tag: string) => (
                             <span
                               key={tag}
-                              className="text-[9px] font-mono px-2 py-0.5 rounded border border-white/10 bg-white/[0.02] text-neutral-300 hover:border-accent-pink/30 hover:text-white transition-colors duration-200"
+                              className="text-[9px] font-mono px-2 py-0.5 rounded border border-white/10 bg-white/2 text-neutral-300 hover:border-accent-pink/30 hover:text-white transition-colors duration-200"
                             >
                               {tag}
                             </span>
@@ -96,7 +165,7 @@ export default function Services() {
                       <div className="space-y-3">
                         <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-500 block">// KEY DELIVERABLES & IMPACT</span>
                         <div className="space-y-2.5">
-                          {intern.details.map((detail, dIdx) => (
+                          {(intern.details || []).map((detail: string, dIdx: number) => (
                             <div key={dIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
                               <span className="h-1.5 w-1.5 rounded-full bg-accent-pink shrink-0 mt-1.5" />
                               <span>{detail}</span>

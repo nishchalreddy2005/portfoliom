@@ -7,6 +7,10 @@ export interface Project {
   year: string;
   description: string;
   demoUrl?: string;
+  githubUrl?: string;
+  featured?: boolean;
+  badges?: string[];
+  metrics?: string[];
   tags: string[];
 }
 

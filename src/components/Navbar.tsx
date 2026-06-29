@@ -4,9 +4,10 @@ import MenuDrawer from "./MenuDrawer";
 
 interface NavbarProps {
   activeSection: string;
+  toggles?: Record<string, boolean>;
 }
 
-export default function Navbar({ activeSection }: NavbarProps) {
+export default function Navbar({ activeSection, toggles = { experience: true, projects: true } }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,14 +26,20 @@ export default function Navbar({ activeSection }: NavbarProps) {
     }
   };
 
+  const links = [
+    ...(toggles.experience !== false ? [{ label: "experience", target: "services" }] : []),
+    { label: "about", target: "about" },
+    ...(toggles.projects !== false ? [{ label: "projects", target: "projects" }] : []),
+  ];
+
   return (
     <>
       <header
         id="app-header"
         className={`fixed top-0 left-0 z-40 w-full transition-all duration-300 ${
           scrolled
-            ? "bg-primary-dark/85 backdrop-blur-md border-b border-white/5 py-3"
-            : "bg-transparent py-5"
+            ? "bg-primary-dark/60 backdrop-blur-2xl py-3 border-b border-transparent [border-image:linear-gradient(to_right,transparent,rgba(212,175,55,0.6),transparent)_1]"
+            : "bg-transparent py-5 border-b border-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
@@ -44,17 +51,13 @@ export default function Navbar({ activeSection }: NavbarProps) {
           >
             <Compass className="h-6 w-6 text-accent-pink group-hover:rotate-180 transition-transform duration-700 ease-out shrink-0" />
             <span className="font-display font-bold text-lg md:text-xl tracking-wider text-white uppercase">
-              ANJANA SHREYA
+              G V R NISHCHAL REDDY
             </span>
           </button>
 
           {/* Quick desktop navigation nodes */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest text-neutral-300">
-            {[
-              { label: "experience", target: "services" },
-              { label: "about", target: "about" },
-              { label: "projects", target: "projects" }
-            ].map((link) => (
+            {links.map((link) => (
               <button
                 key={link.label}
                 onClick={() => {
@@ -80,7 +83,7 @@ export default function Navbar({ activeSection }: NavbarProps) {
                 const el = document.getElementById("contact");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
-              className="hidden md:block border border-white/10 px-4 py-1.5 rounded-full hover:bg-white hover:text-black transition-colors duration-300 font-mono text-[10px] uppercase tracking-wider"
+              className="hidden md:block glass-card px-4 py-1.5 rounded-full hover:text-accent-pink transition-all duration-300 font-mono text-[10px] uppercase tracking-wider hover:scale-105"
             >
               [ Contact Me ]
             </button>
@@ -104,6 +107,7 @@ export default function Navbar({ activeSection }: NavbarProps) {
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         activeSection={activeSection}
+        toggles={toggles}
       />
     </>
   );

@@ -1,0 +1,107 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdminUser {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  image       String
+  year        String
+  description String
+  tags        String[]
+  demoUrl     String?
+  githubUrl   String?
+  paperUrl    String?
+  featured    Boolean  @default(false)
+  badges      String[]
+  metrics     String[]
+  order       Int      @default(0)
+}
+
+model Internship {
+  id          String   @id @default(uuid())
+  num         String
+  company     String
+  role        String
+  duration    String
+  details     String[]
+  tags        String[]
+  order       Int      @default(0)
+}
+
+model Insight {
+  id          String   @id @default(uuid())
+  title       String
+  image       String
+  issuer      String
+  year        String
+  type        String
+  status      String
+  duration    String
+  description String
+  skills      String[]
+  badges      String[]
+  order       Int      @default(0)
+}
+
+model ProcessStep {
+  id          String   @id @default(uuid())
+  num         String
+  title       String
+  description String
+  details     String[]
+  image       String?
+  liveUrl     String?
+  order       Int      @default(0)
+}
+
+model EducationItem {
+  id           String   @id @default(uuid())
+  shortTitle   String
+  degree       String
+  institution  String
+  duration     String
+  degreeStream String
+  board        String?
+  description  String
+  learnings    String[]
+  highlights   String[]
+  snapshot     String[]
+  metrics      String[]
+  order        Int      @default(0)
+}
+
+model SiteContent {
+  key   String @id
+  value String
+}
+
+model Achievement {
+  id           String   @id @default(uuid())
+  tag          String
+  headline     String
+  subHeadline  String?
+  description  String
+  category     String
+  skills       String[]
+  impact       String
+  iconName     String
+  bgPattern    String
+  stats        String[]
+  accentColor  String
+  shadowColor  String
+  order        Int      @default(0)
+}
+

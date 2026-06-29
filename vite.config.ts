@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
 
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
   return {
-    base: "/anjana-shreya-portfolio/",
+    base: command === 'serve' ? '/' : '/gvr-nishchal-reddy-portfolio/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

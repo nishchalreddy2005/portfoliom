@@ -1,11 +1,65 @@
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Compass, Code, Server, Terminal } from "lucide-react";
-import resumePdf from "../assets/Anjana shreya .pdf";
-import { EDUCATION, ACADEMIC_FOCUS, COURSEWORK_TAGS } from "../data";
+import resumePdf from "../assets/G V R Nishchal Reddy.pdf";
 
-export default function About() {
+import { EDUCATION, ACADEMIC_FOCUS, COURSEWORK_TAGS } from "../data";
+import EducationSection from "./EducationSection";
+import SkillsSection from "./SkillsSection";
+
+interface AboutProps {
+  toggles?: Record<string, boolean>;
+}
+
+export default function About({ toggles }: AboutProps) {
   const [hoveredBadge, setHoveredBadge] = useState(false);
+  const [aboutData, setAboutData] = useState({
+    about_title: "Translating curiosity and engineering concepts into practical tools.",
+    about_description: "As a Computer Science Engineering graduate, I focus on learning through direct implementation. I have hands-on experience building full-stack web applications and experimenting with AI and automation projects to create practical software. By focusing on clean code, modern tech stacks like MERN and TypeScript, and hands-on development, I aim to develop tools that address real-world business and user needs.",
+    about_profile_pic_url: "",
+    about_profile_pic_hover_url: "",
+    about_highlight_projects: "5+ Projects Built",
+    about_highlight_tech: "MERN • TypeScript",
+    about_highlight_innovation: "AI & Automation",
+    about_highlight_status: "Open to Opportunities",
+  });
+
+  // Spotlight Reveal Mask coordinates & state
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const imageContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!imageContainerRef.current) return;
+    const rect = imageContainerRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/content')
+      .then(res => res.json())
+      .then((data: any[]) => {
+        if (Array.isArray(data)) {
+          const mapped: any = { ...aboutData };
+          let hasAboutData = false;
+          data.forEach(item => {
+            if (item.key.startsWith('about_')) {
+              hasAboutData = true;
+              if (item.key in aboutData) {
+                mapped[item.key] = item.value || '';
+              }
+            }
+          });
+          if (hasAboutData) {
+            setAboutData(mapped);
+          }
+        }
+      })
+      .catch(err => console.error("Error loading about content:", err));
+  }, []);
 
   const pillars = [
     {
@@ -42,37 +96,94 @@ export default function About() {
             <span className="font-mono text-[10px] text-accent-pink tracking-widest uppercase block">// THE DEVELOPER</span>
             
             <h2 className="font-syne font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.05]">
-              I am a frontend developer specializing in interactive user experiences & clean architectures.
+              {aboutData.about_title}
             </h2>
             
             <p className="text-neutral-400 text-sm md:text-base font-light leading-relaxed max-w-3xl">
-              I build responsive modern web applications featuring modular logic, robust type checking, and fluid interactive animations. Focusing on code craftsmanship and optimal client performance, I translate requirements into high-contrast digital experiences.
+              {aboutData.about_description}
             </p>
           </div>
 
-          {/* Glowing About Us blue badge - inspired by Screen 6 circular button */}
-          <div className="lg:col-span-4 flex lg:justify-end items-center pt-4 lg:pt-12">
-            <motion.a
-              id="floating-about-badge"
-              href={resumePdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseEnter={() => setHoveredBadge(true)}
-              onMouseLeave={() => setHoveredBadge(false)}
-              animate={{
-                scale: hoveredBadge ? 1.05 : 1,
-                rotate: hoveredBadge ? 15 : 0,
-              }}
-              className="relative w-28 h-28 md:w-32 md:h-32 rounded-full bg-accent-blue flex flex-col justify-center items-center text-center p-3 text-white shadow-xl shadow-accent-blue/20 cursor-pointer group focus:outline-none shrink-0 no-underline"
+          {/* Profile Image Slot */}
+          <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center pt-8 lg:pt-0 gap-6">
+            <div 
+              ref={imageContainerRef}
+              onMouseMove={handleMouseMove}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              className="relative w-full max-w-[320px] aspect-square rounded-2xl p-2 glass-card flex items-center justify-center group overflow-hidden cursor-crosshair select-none"
             >
-              <motion.div
-                className="absolute inset-0 rounded-full border border-white/20 animate-spin-slow"
-                style={{ borderStyle: "dashed" }}
-              />
-              <Compass className="h-5 w-5 mb-1 text-white/85" />
-              <span className="font-mono text-[10px] uppercase tracking-widest font-bold">GET MY</span>
-              <span className="font-mono text-[10px] uppercase tracking-widest font-bold">RESUME</span>
-            </motion.a>
+              <div className="absolute inset-0 bg-gradient-gold opacity-10 blur-xl group-hover:opacity-30 transition-opacity duration-500" />
+              
+              {/* Base Image: Grayscale */}
+              {/* Base Image: Grayscale */}
+              {aboutData.about_profile_pic_url ? (
+                <img
+                  src={aboutData.about_profile_pic_url}
+                  alt="Profile Base"
+                  className="w-full h-full object-cover rounded-xl filter grayscale brightness-75 transition-all duration-500 shadow-2xl"
+                />
+              ) : (
+                <div className="w-full h-full rounded-xl bg-neutral-900/60 flex flex-col items-center justify-center text-neutral-500 font-mono text-[9px] uppercase tracking-widest border border-white/5 gap-2">
+                  <span className="text-lg">👤</span>
+                  <span>No Profile Photo</span>
+                </div>
+              )}
+
+              {/* Spotlight Overlay Image: Revealed only under the mouse cursor */}
+              {aboutData.about_profile_pic_url && (
+                <img
+                  src={aboutData.about_profile_pic_hover_url || aboutData.about_profile_pic_url}
+                  alt="Profile Reveal"
+                  style={{
+                    clipPath: isHovered 
+                      ? `circle(75px at ${mousePos.x}px ${mousePos.y}px)` 
+                      : `circle(0px at 0px 0px)`,
+                    transition: isHovered ? "none" : "clip-path 0.4s ease-out",
+                  }}
+                  className="absolute inset-2 w-[calc(100%-16px)] h-[calc(100%-16px)] object-cover rounded-xl z-20 filter grayscale-0 brightness-100 shadow-2xl pointer-events-none"
+                />
+              )}
+              
+              {/* Glowing border indicator */}
+              <div className="absolute inset-0 rounded-2xl border border-accent-pink/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            </div>
+
+            {/* Structured Profile Highlights Layer */}
+            <div className="w-full max-w-[320px] flex flex-col gap-2.5">
+              <div className="flex items-center justify-between gap-3 p-2.5 rounded-xl border border-white/5 bg-white/1 hover:border-accent-pink/20 transition-all duration-300 group/item">
+                <span className="font-mono text-[9px] text-neutral-400 uppercase tracking-wider">PROJECTS</span>
+                <span className="font-display text-xs text-white font-medium group-hover/item:text-accent-pink transition-colors">{aboutData.about_highlight_projects}</span>
+              </div>
+              
+              <div className="flex items-center justify-between gap-3 p-2.5 rounded-xl border border-white/5 bg-white/1 hover:border-accent-pink/20 transition-all duration-300 group/item">
+                <span className="font-mono text-[9px] text-neutral-400 uppercase tracking-wider">CORE TECH</span>
+                <span className="font-display text-xs text-white font-medium group-hover/item:text-accent-pink transition-colors">{aboutData.about_highlight_tech}</span>
+              </div>
+
+              <div className="flex items-center justify-between gap-3 p-2.5 rounded-xl border border-white/5 bg-white/1 hover:border-accent-pink/20 transition-all duration-300 group/item">
+                <span className="font-mono text-[9px] text-neutral-400 uppercase tracking-wider">INNOVATION</span>
+                <span className="font-display text-xs text-white font-medium group-hover/item:text-accent-pink transition-colors">{aboutData.about_highlight_innovation}</span>
+              </div>
+
+              {aboutData.about_highlight_status === 'Open to Opportunities' ? (
+                <div className="flex items-center justify-between gap-3 p-2.5 rounded-xl border border-green-500/10 bg-green-500/2 hover:border-green-500/30 transition-all duration-300">
+                  <span className="font-mono text-[9px] text-green-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+                    STATUS
+                  </span>
+                  <span className="font-display text-xs text-green-400 font-medium">{aboutData.about_highlight_status}</span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between gap-3 p-2.5 rounded-xl border border-red-500/10 bg-red-500/2 hover:border-red-500/30 transition-all duration-300">
+                  <span className="font-mono text-[9px] text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-pulse" />
+                    STATUS
+                  </span>
+                  <span className="font-display text-xs text-red-400 font-medium">{aboutData.about_highlight_status}</span>
+                </div>
+              )}
+            </div>
           </div>
 
         </div>
@@ -93,7 +204,7 @@ export default function About() {
               <span className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
             <div className="text-[10px] font-mono text-neutral-400 capitalize bg-black/40 px-6 py-0.5 rounded-full border border-white/5">
-              https://anjana-shreya.dev/workspace
+              https://gvr-nishchal-reddy.dev/workspace
             </div>
             <div className="w-8" />
           </div>
@@ -113,148 +224,49 @@ export default function About() {
           </div>
         </div> */}
 
-        {/* Education Heading */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-          <div className="space-y-2">
-            <span className="font-mono text-[10px] text-accent-pink tracking-widest uppercase block">// ACADEMIC FOUNDATION</span>
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mt-1">
-              Education
-            </h2>
-          </div>
-        </div>
+        {/* Education Heading & Display */}
+        {toggles?.education && (
+          <>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+              <div className="space-y-2">
+                <span className="font-mono text-[10px] text-accent-pink tracking-widest uppercase block">// ACADEMIC FOUNDATION</span>
+                <h2 className="font-syne font-bold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mt-1">
+                  Education
+                </h2>
+              </div>
+            </div>
+            <EducationSection />
+          </>
+        )}
+      </div>
 
-        {/* Creative Education Display */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Left Column: Interactive Timeline Card */}
-          <div className="lg:col-span-7 flex flex-col space-y-6">
-            {EDUCATION.map((edu, idx) => (
-              <div 
-                key={idx}
-                className="relative pl-8 border-l border-white/10 hover:border-accent-pink/40 transition-colors duration-300 group py-2"
-              >
-                {/* Timeline node */}
-                <div className="absolute -left-[5px] top-6 h-2.5 w-2.5 rounded-full bg-neutral-800 border border-white/20 group-hover:bg-accent-pink group-hover:border-accent-pink group-hover:shadow-[0_0_10px_rgba(244,114,182,0.6)] transition-all duration-300" />
-                
-                <div className="bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-white/15 p-6 rounded-2xl transition-all duration-300 relative overflow-hidden flex flex-col gap-2 shadow-2xl shadow-black/40">
-                  <div className="flex flex-wrap justify-between items-start gap-2">
-                    <div>
-                      <span className="font-mono text-[10px] text-accent-blue tracking-wider uppercase block">{edu.period}</span>
-                      <h3 className="font-display font-medium text-lg text-white group-hover:text-accent-pink transition-colors mt-0.5">
-                        {edu.degree}
-                      </h3>
-                    </div>
-                    {edu.grade && (
-                      <span className="text-[10px] font-mono px-2.5 py-0.5 rounded border border-accent-pink/20 bg-accent-pink/5 text-accent-pink uppercase tracking-widest shrink-0 font-bold">
-                        {edu.grade}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <p className="text-neutral-400 text-xs font-light">
-                    {edu.institution}
+      {toggles?.skills && (
+        <>
+          {/* Full-width edge-to-edge horizontal divider line */}
+          <div className="w-full border-t border-white/10 my-16 md:my-24" />
+
+          {/* SKILLS SECTION SECOND */}
+          <div className="w-full relative">
+            <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+              {/* Skills Heading */}
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-4">
+                <div className="space-y-2">
+                  <span className="font-mono text-[10px] text-accent-pink tracking-widest uppercase block">// TECHNICAL EXPERTISE</span>
+                  <h2 className="font-syne font-bold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mt-1">
+                    Skills & Technologies
+                  </h2>
+                  <p className="text-neutral-400 text-xs sm:text-sm font-light mt-1 max-w-2xl">
+                    Technologies, frameworks, and tools I use to build modern software solutions.
                   </p>
-                  
-                  {edu.details && (
-                    <ul className="list-none space-y-2 mt-3">
-                      {edu.details.map((detail, dIdx) => (
-                        <li key={dIdx} className="text-neutral-400 group-hover:text-neutral-300 transition-colors text-[11px] font-light flex items-start gap-2 leading-relaxed">
-                          <span className="text-accent-pink font-bold font-mono shrink-0 select-none">›</span>
-                          <span>{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Right Column: Specializations, Key Coursework & Focus Areas Panel */}
-          <div className="lg:col-span-5 bg-white/[0.01] border border-white/5 p-6 md:p-8 rounded-2xl flex flex-col justify-between hover:border-white/10 transition-colors relative overflow-hidden group shadow-2xl shadow-black/40">
-            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-accent-pink/5 blur-[50px] pointer-events-none -z-10 group-hover:bg-accent-pink/10 transition-all duration-500" />
-            
-            <div className="space-y-6">
-              <div>
-                <span className="font-mono text-[10px] text-accent-pink tracking-widest uppercase block">// AREAS OF STUDY</span>
-                <h3 className="font-syne font-bold text-xl text-white tracking-tight mt-1">
-                  Academic Focus
-                </h3>
-              </div>
-              
-              <div className="space-y-5">
-                {ACADEMIC_FOCUS.map((item, idx) => (
-                  <div key={idx} className="flex gap-3.5 items-start">
-                    <div className="h-6 w-6 rounded bg-white/5 border border-white/5 flex items-center justify-center font-mono text-[10px] text-accent-pink font-bold shrink-0 mt-0.5">
-                      0{idx + 1}
-                    </div>
-                    <div>
-                      <h4 className="font-display font-medium text-xs text-neutral-200">{item.title}</h4>
-                      <p className="text-neutral-500 text-[10px] font-light mt-0.5 leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
-            
-            <div className="mt-8 pt-6 border-t border-white/5 flex flex-wrap gap-1.5">
-              {COURSEWORK_TAGS.map((tag, idx) => (
-                <span 
-                  key={idx}
-                  className="text-[9px] font-mono px-2 py-0.5 rounded border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] text-neutral-400 hover:text-white transition-all duration-300"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
+
+            {/* Scrolling ticker walls and toolkit panel */}
+            <SkillsSection />
           </div>
-          
-        </div>
-      </div>
-
-      {/* Full-width edge-to-edge horizontal divider line */}
-      <div className="w-full border-t border-white/10 my-16 md:my-24" />
-
-      {/* SKILLS SECTION SECOND */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-        {/* Skills Heading */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-          <div className="space-y-2">
-            <span className="font-mono text-[10px] text-accent-pink tracking-widest uppercase block">// MY TOOLKIT & STACK</span>
-            <h2 className="font-syne font-bold text-3xl sm:text-4xl md:text-5xl text-white tracking-tight mt-1">
-              Skills
-            </h2>
-          </div>
-        </div>
-
-        {/* Lower layout: Core values pillars block (modular grids) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
-          {pillars.map((pi, idx) => (
-            <div
-              key={idx}
-              className="interactive-card flex flex-col p-6 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/15 transition-all duration-300 gap-4 group"
-            >
-              <div className="h-10 w-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/5 group-hover:border-white/15 transition-colors">
-                {pi.icon}
-              </div>
-              <h3 className="font-display font-medium text-lg text-white group-hover:text-accent-pink transition-colors">
-                {pi.title}
-              </h3>
-              <div className="flex flex-wrap gap-2 pt-1">
-                {pi.description.split(", ").map((skill, sIdx) => (
-                  <span
-                    key={sIdx}
-                    className="text-xs font-mono px-2.5 py-1 rounded border border-white/5 bg-white/[0.01] group-hover:bg-white/[0.03] group-hover:border-white/10 text-neutral-200 group-hover:text-white transition-all duration-300"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-      </div>
+        </>
+      )}
     </section>
   );
 }

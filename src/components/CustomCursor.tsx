@@ -28,10 +28,14 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // Trigger scaling on hover of interactive elements
+      if (!target) return;
+      
+      // Trigger scaling on hover of interactive elements (including links, buttons, inputs)
       const isInteractive = 
         target.tagName === "A" || 
         target.tagName === "BUTTON" || 
+        target.tagName === "INPUT" || 
+        target.tagName === "TEXTAREA" ||
         target.closest("a") || 
         target.closest("button") ||
         target.closest(".interactive-card") ||
@@ -61,15 +65,18 @@ export default function CustomCursor() {
   return (
     <motion.div
       id="custom-pointer"
-      className="custom-cursor hidden md:block"
+      className="custom-cursor hidden md:block pointer-events-none"
       style={{
         x: cursorXSpring,
         y: cursorYSpring,
+        translateX: "-50%",
+        translateY: "-50%",
       }}
       animate={{
-        width: isHovered ? 64 : 12,
-        height: isHovered ? 64 : 12,
-        backgroundColor: isHovered ? "rgba(255, 255, 255, 0.95)" : "rgb(255, 255, 255)",
+        width: isHovered ? 56 : 10,
+        height: isHovered ? 56 : 10,
+        backgroundColor: isHovered ? "rgba(212, 175, 55, 0.15)" : "#d4af37",
+        border: isHovered ? "1px solid rgba(212, 175, 55, 0.4)" : "0px solid transparent",
       }}
     />
   );
