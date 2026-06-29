@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { ArrowUp, Mail, Phone, MapPin, Send, CheckCircle2, ShieldCheck, Sparkles, Clock, Briefcase, Cpu, Globe } from "lucide-react";
 import { SOCIAL_LINKS } from "../data";
 import emailjs from "@emailjs/browser";
+import { API_BASE } from "../config";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -31,7 +32,7 @@ export default function Contact() {
   const [consultationsDescription, setConsultationsDescription] = useState("Have an idea, brief, or active technical requirement? Drop me a message or write directly to my inbox. I usually reply within 24 hours.");
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/content')
+    fetch(`${API_BASE}/api/content`)
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data)) {

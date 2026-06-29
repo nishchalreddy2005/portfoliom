@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowDown, Stars, ArrowRight, Github, Linkedin, Download } from "lucide-react";
 import resumePdf from "../assets/G V R Nishchal Reddy.pdf";
+import { API_BASE } from "../config";
 
 export default function Hero() {
   const [heroData, setHeroData] = useState({
@@ -16,7 +17,7 @@ export default function Hero() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/content')
+    fetch(`${API_BASE}/api/content`)
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data)) {

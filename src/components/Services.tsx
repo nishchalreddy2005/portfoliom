@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Minus } from "lucide-react";
 import axios from "axios";
+import { API_BASE } from "../config";
 
 const FALLBACK_INTERNSHIPS = [
   {
@@ -58,7 +59,7 @@ export default function Services() {
   const [internships, setInternships] = useState<any[]>(FALLBACK_INTERNSHIPS);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/internships')
+    axios.get(`${API_BASE}/api/internships`)
       .then(res => {
         if (Array.isArray(res.data) && res.data.length > 0) {
           const sorted = res.data.sort((a: any, b: any) => a.order - b.order);

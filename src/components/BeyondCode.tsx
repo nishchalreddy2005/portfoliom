@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Award, Users, X, Trophy, UserCheck, Medal, Sparkles } from "lucide-react";
+import { API_BASE } from "../config";
 
 interface Achievement {
   id: string;
@@ -198,7 +199,7 @@ export default function BeyondCode() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/achievements")
+    fetch(`${API_BASE}/api/achievements`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

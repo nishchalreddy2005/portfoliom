@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Compass, Code, Server, Terminal } from "lucide-react";
 import resumePdf from "../assets/G V R Nishchal Reddy.pdf";
+import { API_BASE } from "../config";
 
 import { EDUCATION, ACADEMIC_FOCUS, COURSEWORK_TAGS } from "../data";
 import EducationSection from "./EducationSection";
@@ -39,7 +40,7 @@ export default function About({ toggles }: AboutProps) {
   };
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/content')
+    fetch(`${API_BASE}/api/content`)
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data)) {

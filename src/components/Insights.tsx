@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { ArrowLeft, ArrowRight, ShieldCheck, Sparkles, Award } from "lucide-react";
+import { API_BASE } from "../config";
 import { 
   SiReact, 
   SiNodedotjs, 
@@ -70,7 +71,7 @@ export default function Insights() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/insights')
+    fetch(`${API_BASE}/api/insights`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {

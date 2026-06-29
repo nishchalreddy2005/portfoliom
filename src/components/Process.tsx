@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { CheckCircle, ArrowUpRight, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import axios from 'axios';
+import { API_BASE } from "../config";
 
 interface ProcessStep {
   id: string;
@@ -52,7 +53,7 @@ export default function Process() {
 
   useEffect(() => {
     // Fetch process steps (projects) from the backend API
-    axios.get('http://localhost:3001/api/projects')
+    axios.get(`${API_BASE}/api/projects`)
       .then(response => {
         // Map the backend projects structure back to process steps for the UI
         const data = response.data.map((proj: any, idx: number) => ({

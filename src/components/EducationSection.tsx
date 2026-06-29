@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, GraduationCap, Calendar, BookOpen, Award, Sparkles, Check, School } from "lucide-react";
+import { API_BASE } from "../config";
 
 export type EducationId = "btech" | "intermediate" | "school";
 
@@ -306,7 +307,7 @@ export default function EducationSection() {
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/education')
+    fetch(`${API_BASE}/api/education`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {

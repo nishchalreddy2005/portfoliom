@@ -18,6 +18,8 @@ import PortfolioChatbot from "./components/PortfolioChatbot";
 import { Routes, Route } from "react-router-dom";
 import AdminDashboard from "./components/AdminDashboard";
 
+import { API_BASE } from "./config";
+
 function MainPortfolio() {
   const [loading, setLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -32,7 +34,7 @@ function MainPortfolio() {
 
   // Fetch toggles from the database
   useEffect(() => {
-    fetch('http://localhost:3001/api/content')
+    fetch(`${API_BASE}/api/content`)
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data)) {

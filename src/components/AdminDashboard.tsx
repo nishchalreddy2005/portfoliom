@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../config';
 import { LayoutDashboard, Briefcase, Lightbulb, FileText, Plus, Edit2, Trash2, X, LogOut, Loader2, Link as LinkIcon, Github, GraduationCap, School, Award, Sliders, GripVertical, Home, User, Cpu, ChevronUp, ChevronDown, Mail, Trophy } from 'lucide-react';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001/api'
+  baseURL: `${API_BASE}/api`
 });
 
 api.interceptors.request.use((config) => {

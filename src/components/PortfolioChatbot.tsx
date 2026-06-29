@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Send } from "lucide-react";
+import { API_BASE } from "../config";
 
 interface Message {
   role: "user" | "assistant";
@@ -49,7 +50,7 @@ export default function PortfolioChatbot() {
     setIsTyping(true);
 
     try {
-      const res = await fetch("http://localhost:3001/api/chat", {
+      const res = await fetch(`${API_BASE}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Sparkles, RefreshCw, Clock, CheckCircle } from "lucide-react";
+import { API_BASE } from "../config";
 import {
   SiReact, SiTypescript, SiJavascript, SiTailwindcss, SiNodedotjs, SiExpress,
   SiMongodb, SiMysql, SiSolidity, SiEthereum, SiOpenai, SiGit, SiGithub, SiPostman,
@@ -104,7 +105,7 @@ export default function MemoryGame() {
 
   // Load skills from database
   useEffect(() => {
-    fetch('http://localhost:3001/api/content')
+    fetch(`${API_BASE}/api/content`)
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data)) {

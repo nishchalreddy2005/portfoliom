@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Code, Server, Database, Cpu, Shield, Wrench, Sparkles, Gamepad2, X } from "lucide-react";
 import MemoryGame from "./MemoryGame";
+import { API_BASE } from "../config";
 import { 
   SiReact, SiTypescript, SiJavascript, SiTailwindcss, SiNodedotjs, SiExpress,
   SiMongodb, SiMysql, SiSolidity, SiEthereum, SiOpenai, SiGit, SiGithub, SiPostman,
@@ -228,7 +229,7 @@ export default function SkillsSection() {
   const [isMemoryOpen, setIsMemoryOpen] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/content')
+    fetch(`${API_BASE}/api/content`)
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data)) {

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, ArrowRight, Compass, Mail, Phone, MapPin } from "lucide-react";
 import { SOCIAL_LINKS } from "../data";
+import { API_BASE } from "../config";
 
 interface MenuDrawerProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ export default function MenuDrawer({ isOpen, onClose, activeSection, toggles = {
   };
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/content')
+    fetch(`${API_BASE}/api/content`)
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data)) {
