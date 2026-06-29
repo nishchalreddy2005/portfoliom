@@ -1589,6 +1589,88 @@ function TogglesManager() {
   );
 }
 
+function ChatbotSettingsManager() {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [data, setData] = useState({
+    chatbot_custom_data: ''
+  });
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    try {
+      setLoading(true);
+      const { data: dbData } = await api.get('/content');
+      const found = dbData.find((item: any) => item.key === 'chatbot_custom_data');
+      setData({ chatbot_custom_data: found ? found.value : '' });
+    } catch (err) {
+      console.error("Error loading chatbot content:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSaving(true);
+      await api.put(`/content/chatbot_custom_data`, { value: data.chatbot_custom_data });
+      alert('Chatbot custom data saved successfully!');
+    } catch (err) {
+      console.error("Error saving chatbot content:", err);
+      alert('Failed to save settings.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 text-neutral-400 font-mono text-xs">
+        <Loader2 size={16} className="animate-spin" /> Loading configurations...
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <PageHeader title="Chatbot Knowledge Settings" />
+      <form onSubmit={handleSave} className="space-y-8 max-w-4xl bg-neutral-900/40 border border-white/5 p-6 sm:p-8 rounded-3xl backdrop-blur-md">
+        <div className="space-y-4">
+          <h3 className="text-sm font-mono uppercase tracking-widest text-[#FFD54F] border-b border-white/5 pb-2">Custom AI Knowledge Base</h3>
+          <p className="text-xs text-neutral-400 font-sans leading-relaxed">
+            Provide extra context, facts, backstory, or specific details that you want the chatbot to know. 
+            This information will be fed directly into the chatbot prompt to help it answer recruiter questions more properly, 
+            but it will be **hidden from the main website frontend**.
+          </p>
+          <div className="space-y-2">
+            <label className="text-[10px] text-neutral-400 mb-1.5 font-mono uppercase tracking-wider pl-1">Extra Chatbot Knowledge Context</label>
+            <textarea 
+              className="w-full bg-black/50 border border-white/10 p-4 rounded-xl text-white text-sm h-64 focus:border-[#FFD54F]/50 focus:bg-white/5 focus:outline-none transition-all custom-scrollbar" 
+              placeholder="e.g., I built XYZ using Next.js because... / My career goal is... / Fun facts about me..." 
+              value={data.chatbot_custom_data} 
+              onChange={e => setData({ chatbot_custom_data: e.target.value })} 
+            />
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-white/5 flex justify-end">
+          <button
+            type="submit"
+            disabled={saving}
+            className="flex items-center gap-2 bg-[#FFD54F] text-black px-8 py-3.5 rounded-2xl font-bold hover:bg-[#e5bf45] transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="animate-spin" size={18} /> : 'Save Chatbot Knowledge'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function ContactSettingsManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -2044,6 +2126,7 @@ export default function AdminDashboard() {
     { path: '/admin/insights', label: 'Certifications', icon: <Award size={20} /> },
     { path: '/admin/achievements', label: 'Achievements & Leadership', icon: <Trophy size={20} /> },
     { path: '/admin/contact', label: 'Contact Settings', icon: <Mail size={20} /> },
+    { path: '/admin/chatbot', label: 'Chatbot Data', icon: <Lightbulb size={20} /> },
     { path: '/admin/toggles', label: 'Section Toggles', icon: <Sliders size={20} /> },
   ];
 
@@ -2119,6 +2202,7 @@ export default function AdminDashboard() {
             <Route path="/insights" element={<InsightsManager />} />
             <Route path="/achievements" element={<AchievementsManager />} />
             <Route path="/contact" element={<ContactSettingsManager />} />
+            <Route path="/chatbot" element={<ChatbotSettingsManager />} />
             <Route path="/toggles" element={<TogglesManager />} />
           </Routes>
         </div>

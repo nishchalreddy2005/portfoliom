@@ -288,6 +288,8 @@ app.post('/api/chat', async (req, res) => {
       .map(a => `- ${a.tag}: ${a.headline} (${a.subHeadline}) - ${a.description}. Impact: ${a.impact}`)
       .join('\n');
 
+    const chatbotCustomDataText = getVal('chatbot_custom_data', '');
+
     const systemPrompt = `You are the personal AI assistant embedded in ${name}'s portfolio website. You speak ABOUT ${name} in the third person to visitors (never pretend to literally be them in first person unless asked to role-play) — you are their helpful representative, answering questions a recruiter, collaborator, or visitor might ask.
 
 PROFILE
@@ -315,6 +317,9 @@ ${githubProjectsText || "None."}
 
 ACHIEVEMENTS (Athletics, Sports, Leadership)
 ${achievementsText || "Not provided."}
+
+ADDITIONAL KNOWLEDGE DATA / NOTES (Use this to answer specific background questions)
+${chatbotCustomDataText || "None."}
 
 RULES
 - Be warm, professional, and conversational.
