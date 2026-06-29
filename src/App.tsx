@@ -11,6 +11,7 @@ import Process from "./components/Process";
 import Insights from "./components/Insights";
 import BeyondCode from "./components/BeyondCode";
 import AsteroidDodger from "./components/AsteroidDodger";
+import CodingDNA from "./components/CodingDNA";
 import Contact from "./components/Contact";
 import CustomCursor from "./components/CustomCursor";
 import PortfolioChatbot from "./components/PortfolioChatbot";
@@ -168,6 +169,7 @@ function MainPortfolio() {
             <main id="primary-portfolio-root">
               <Hero />
               <About toggles={toggles} />
+              <CodingDNA />
               {/* <Portfolio /> */}
               {toggles.experience && <Services />}
               {toggles.projects && <Process />}
