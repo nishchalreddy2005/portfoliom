@@ -11,7 +11,6 @@ import Process from "./components/Process";
 import Insights from "./components/Insights";
 import BeyondCode from "./components/BeyondCode";
 import AsteroidDodger from "./components/AsteroidDodger";
-import CodingDNA from "./components/CodingDNA";
 import Contact from "./components/Contact";
 import CustomCursor from "./components/CustomCursor";
 import PortfolioChatbot from "./components/PortfolioChatbot";
@@ -169,7 +168,6 @@ function MainPortfolio() {
             <main id="primary-portfolio-root">
               <Hero />
               <About toggles={toggles} />
-              <CodingDNA />
               {/* <Portfolio /> */}
               {toggles.experience && <Services />}
               {toggles.projects && <Process />}
@@ -187,6 +185,30 @@ function MainPortfolio() {
 }
 
 export default function App() {
+  useEffect(() => {
+    const handleContextMenu = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && target.tagName === 'IMG') {
+        e.preventDefault();
+      }
+    };
+
+    const handleDragStart = (e: DragEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && target.tagName === 'IMG') {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('dragstart', handleDragStart);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('dragstart', handleDragStart);
+    };
+  }, []);
+
   return (
     <Routes>
       <Route path="/admin/*" element={<AdminDashboard />} />

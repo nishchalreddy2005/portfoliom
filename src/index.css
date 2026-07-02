@@ -44,6 +44,17 @@
     background-color: rgba(212, 175, 55, 0.25);
     color: #ffffff;
   }
+
+  /* Make all images non-downloadable and non-selectable */
+  img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
 }
 
 /* Custom Marquee keyframes */
