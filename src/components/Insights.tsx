@@ -530,7 +530,7 @@ export default function Insights() {
                       src={ins.image}
                       alt={ins.title}
                       referrerPolicy="no-referrer"
-                      className={`w-full h-full object-cover transition-all duration-300 ${
+                      className={`w-full h-full object-contain transition-all duration-300 ${
                         isCenter 
                           ? "saturate-50 opacity-65 group-hover:saturate-100 group-hover:opacity-100" 
                           : "saturate-50 opacity-35"
