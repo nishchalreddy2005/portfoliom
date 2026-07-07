@@ -18,9 +18,14 @@ if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'fallback_secret') {
   console.warn("WARNING: Server is running with a fallback JWT secret in production mode. Please set JWT_SECRET immediately.");
 }
 
-// --- Security Headers ---
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      "img-src": ["'self'", "data:", "blob:", "*"],
+    }
+  }
 }));
 
 // --- Strict CORS Configuration ---
