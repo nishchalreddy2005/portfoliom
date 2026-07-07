@@ -512,8 +512,8 @@ export default function Insights() {
                   </div>
 
                   {/* Certificate Preview Image (Bottom - Supporting Content 30-35% height) */}
-                  <div className="h-[105px] sm:h-[120px] md:h-[135px] w-full overflow-hidden relative rounded-xl border border-white/5 bg-neutral-950/80 shrink-0 mt-2">
-                    <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent z-10" />
+                  <div className="h-[105px] sm:h-[120px] md:h-[135px] w-full overflow-hidden relative rounded-xl border border-white/5 bg-neutral-950/80 shrink-0 mt-2 flex items-center justify-center p-1.5">
+                    <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent z-10 pointer-events-none" />
                     
                     {/* WOW Moment #2: LUXURY GLASS SHINE animation over the certificate image */}
                     {isCenter && (
@@ -530,7 +530,7 @@ export default function Insights() {
                       src={ins.image}
                       alt={ins.title}
                       referrerPolicy="no-referrer"
-                      className={`w-full h-full object-contain transition-all duration-300 ${
+                      className={`max-w-full max-h-full w-auto h-auto object-contain transition-all duration-300 ${
                         isCenter 
                           ? "saturate-50 opacity-65 group-hover:saturate-100 group-hover:opacity-100" 
                           : "saturate-50 opacity-35"
