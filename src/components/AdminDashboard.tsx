@@ -955,6 +955,7 @@ function HeroSettingsManager() {
     hero_linkedin_url: '',
     hero_github_url: '',
     hero_orb_url: '',
+    hero_ticker_speed: '60',
   });
 
   useEffect(() => {
@@ -1041,6 +1042,25 @@ function HeroSettingsManager() {
           <h3 className="text-sm font-mono uppercase tracking-widest text-[#FFD54F] border-b border-white/5 pb-2">Moving Background Tickers</h3>
           <div className="space-y-5">
             <ArrayInput label="Moving Ticker Words (Horizontal moving text)" placeholder="e.g. TYPESCRIPT" value={data.hero_ticker_words} onChange={(v: any) => setData({ ...data, hero_ticker_words: v })} />
+            <div className="space-y-2">
+              <div className="flex justify-between items-center pl-1">
+                <label className="text-[10px] text-neutral-400 font-mono uppercase tracking-wider">Ticker Speed / Duration</label>
+                <span className="text-xs font-mono text-[#FFD54F]">{data.hero_ticker_speed || 60}s (lower is faster)</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-xs font-mono text-neutral-500">Fast (10s)</span>
+                <input 
+                  type="range" 
+                  min="10" 
+                  max="120" 
+                  step="5" 
+                  value={data.hero_ticker_speed || 60} 
+                  onChange={e => setData({ ...data, hero_ticker_speed: e.target.value })}
+                  className="flex-1 accent-[#FFD54F] bg-neutral-800 h-1.5 rounded-lg cursor-pointer appearance-none" 
+                />
+                <span className="text-xs font-mono text-neutral-500">Slow (120s)</span>
+              </div>
+            </div>
           </div>
         </div>
 

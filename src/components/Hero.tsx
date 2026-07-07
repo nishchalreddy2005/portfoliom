@@ -13,7 +13,8 @@ export default function Hero() {
     hero_ticker_words: ["SOFTWARE ENGINEER", "TYPESCRIPT", "FULL STACK", "PROBLEM SOLVER", "LEARNER", "BUILDER"],
     hero_resume_url: "",
     hero_linkedin_url: "https://www.linkedin.com/in/gvrnishchalreddy",
-    hero_github_url: "https://github.com/gvrnishchalreddy"
+    hero_github_url: "https://github.com/gvrnishchalreddy",
+    hero_ticker_speed: "60"
   });
 
   useEffect(() => {
@@ -89,7 +90,7 @@ export default function Hero() {
       <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-0 hidden md:block">
         {/* Left marquee */}
         <div className="relative overflow-hidden w-full h-20 opacity-40 select-none pointer-events-none blur-[2px]">
-          <div className="animate-marquee whitespace-nowrap flex py-2 border-y border-white/5 font-syne font-black text-5xl text-stroke-white tracking-widest leading-none">
+          <div className="animate-marquee whitespace-nowrap flex py-2 border-y border-white/5 font-syne font-black text-5xl text-stroke-white tracking-widest leading-none" style={{ animationDuration: `${heroData.hero_ticker_speed || 60}s` }}>
             {Array(6).fill(tickerOne).flat().map((word, idx) => (
               <span key={idx} className="mx-8">
                 {word} <span className="text-white/20 select-none ml-8">/</span>
@@ -100,7 +101,7 @@ export default function Hero() {
 
         {/* Right marquee (reverse) */}
         <div className="relative overflow-hidden w-full h-20 opacity-30 select-none pointer-events-none mt-4 blur-[2px]">
-          <div className="animate-marquee-reverse whitespace-nowrap flex py-2 border-y border-white/5 font-syne font-black text-5xl text-stroke-white tracking-widest leading-none">
+          <div className="animate-marquee-reverse whitespace-nowrap flex py-2 border-y border-white/5 font-syne font-black text-5xl text-stroke-white tracking-widest leading-none" style={{ animationDuration: `${heroData.hero_ticker_speed || 60}s` }}>
             {Array(6).fill(tickerTwo).flat().map((word, idx) => (
               <span key={idx} className="mx-8">
                 {word} <span className="text-white/20 select-none ml-8">/</span>
