@@ -331,7 +331,7 @@ export default function Insights() {
                   mass: 1.0
                 }}
                 onClick={() => handleCardClick(idx, ins.id)}
-                className={`absolute w-[310px] sm:w-[400px] md:w-[450px] h-[490px] sm:h-[540px] md:h-[585px] rounded-2xl border backdrop-blur-md transition-[filter,opacity,border-color,background-color,box-shadow] duration-500 ease-out select-none ${
+                className={`absolute w-[310px] sm:w-[400px] md:w-[450px] h-[500px] sm:h-[555px] md:h-[600px] rounded-2xl border backdrop-blur-md transition-[filter,opacity,border-color,background-color,box-shadow] duration-500 ease-out select-none ${
                   isCenter 
                     ? "cursor-default border-[#FFD54F]/35 bg-white/4 shadow-[0_0_25px_rgba(255,213,79,0.08)] active-card-shimmer" // WOW Moment #9: Subtle Shimmer Animation
                     : "cursor-pointer hover:border-white/10 border-white/5 bg-white/2"
@@ -421,7 +421,7 @@ export default function Insights() {
                   )}
 
                   {/* Header Information (Top - 65% height) */}
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {/* Title - Reveal 1 */}
                     <motion.h3 
                       {...getRevealProps(0)}
@@ -487,7 +487,7 @@ export default function Insights() {
                     {/* Description - Reveal 4 */}
                     <motion.p 
                       {...getRevealProps(3)}
-                      className="text-[11px] md:text-xs text-neutral-300/90 leading-relaxed line-clamp-3 pt-1"
+                      className="text-[11px] md:text-xs text-neutral-300/90 leading-relaxed line-clamp-2 pt-0.5"
                     >
                       {details.description}
                     </motion.p>
@@ -495,14 +495,14 @@ export default function Insights() {
                     {/* Skills Acquired - Reveal 5 */}
                     <motion.div 
                       {...getRevealProps(4)}
-                      className="space-y-2 pt-2 border-t border-white/5"
+                      className="space-y-1.5 pt-1.5 border-t border-white/5"
                     >
                       <span className="text-[9px] text-neutral-500 tracking-widest block uppercase font-bold">SKILLS ACQUIRED</span>
-                      <div className="flex flex-wrap gap-x-3.5 gap-y-2.5">
+                      <div className="flex flex-wrap gap-x-3 gap-y-2">
                         {details.skills.map((skill) => (
                           <span 
                             key={skill} 
-                            className="h-7 px-3.5 flex items-center justify-center rounded bg-white/5 text-neutral-300 border border-white/5 font-semibold text-[10px] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#FFD54F]/40 hover:shadow-[0_0_10px_rgba(255,213,79,0.12)] hover:text-white"
+                            className="h-6.5 px-3 flex items-center justify-center rounded bg-white/5 text-neutral-300 border border-white/5 font-semibold text-[9.5px] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#FFD54F]/40 hover:shadow-[0_0_10px_rgba(255,213,79,0.12)] hover:text-white"
                           >
                             {skill}
                           </span>
@@ -512,7 +512,7 @@ export default function Insights() {
                   </div>
 
                   {/* Certificate Preview Image (Bottom - Supporting Content 30-35% height) */}
-                  <div className="h-[120px] sm:h-[135px] md:h-[150px] w-full overflow-hidden relative rounded-xl border border-white/5 bg-neutral-950/80 shrink-0 mt-3">
+                  <div className="h-[105px] sm:h-[120px] md:h-[135px] w-full overflow-hidden relative rounded-xl border border-white/5 bg-neutral-950/80 shrink-0 mt-2">
                     <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent z-10" />
                     
                     {/* WOW Moment #2: LUXURY GLASS SHINE animation over the certificate image */}
