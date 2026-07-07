@@ -225,7 +225,7 @@ export default function Insights() {
         {/* 3D Carousel container */}
         <div 
           ref={containerRef}
-          className="relative w-full h-[570px] md:h-[645px] flex items-center justify-center overflow-visible mt-[-10px] sm:mt-[-25px] md:mt-[-35px] mb-4"
+          className="relative w-full h-[590px] md:h-[660px] flex items-center justify-center overflow-visible mt-[-10px] sm:mt-[-25px] md:mt-[-35px] mb-4"
           style={{ perspective: "1800px", transformStyle: "preserve-3d" }}
         >
           {items.map((ins, idx) => {
@@ -331,7 +331,7 @@ export default function Insights() {
                   mass: 1.0
                 }}
                 onClick={() => handleCardClick(idx, ins.id)}
-                className={`absolute w-[310px] sm:w-[400px] md:w-[450px] h-[500px] sm:h-[555px] md:h-[600px] rounded-2xl border backdrop-blur-md transition-[filter,opacity,border-color,background-color,box-shadow] duration-500 ease-out select-none ${
+                className={`absolute w-[310px] sm:w-[400px] md:w-[450px] h-[520px] sm:h-[570px] md:h-[620px] rounded-2xl border backdrop-blur-md transition-[filter,opacity,border-color,background-color,box-shadow] duration-500 ease-out select-none ${
                   isCenter 
                     ? "cursor-default border-[#FFD54F]/35 bg-white/4 shadow-[0_0_25px_rgba(255,213,79,0.08)] active-card-shimmer" // WOW Moment #9: Subtle Shimmer Animation
                     : "cursor-pointer hover:border-white/10 border-white/5 bg-white/2"
