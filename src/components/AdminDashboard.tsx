@@ -132,8 +132,8 @@ const MultiSelectInput = ({ label, options, selected = [], onChange }: any) => {
     }
   };
 
-  const handleAddCustom = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAddCustom = (e?: any) => {
+    if (e && e.preventDefault) e.preventDefault();
     const trimmed = customVal.trim();
     if (trimmed && !allOptions.includes(trimmed)) {
       setCustomOptions(prev => [...prev, trimmed]);
@@ -167,21 +167,28 @@ const MultiSelectInput = ({ label, options, selected = [], onChange }: any) => {
           );
         })}
       </div>
-      <form onSubmit={handleAddCustom} className="flex gap-2 mt-2 pt-2 border-t border-white/5">
+      <div className="flex gap-2 mt-2 pt-2 border-t border-white/5">
         <input
           type="text"
           value={customVal}
           onChange={(e) => setCustomVal(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleAddCustom();
+            }
+          }}
           placeholder="Add custom option..."
           className="bg-black/50 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:border-[#FFD54F]/50 focus:bg-white/5 focus:outline-none grow"
         />
         <button
-          type="submit"
+          type="button"
+          onClick={handleAddCustom}
           className="text-xs font-mono uppercase tracking-wider bg-[#FFD54F] hover:bg-[#e5bf45] text-black px-3 py-1.5 rounded-xl font-bold transition-all shrink-0"
         >
-          Add Custom
+          Add
         </button>
-      </form>
+      </div>
     </div>
   );
 };
