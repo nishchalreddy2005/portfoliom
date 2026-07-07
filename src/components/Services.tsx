@@ -59,17 +59,33 @@ export default function Services() {
   const [internships, setInternships] = useState<any[]>(FALLBACK_INTERNSHIPS);
 
   useEffect(() => {
-    axios.get(`${API_BASE}/api/internships`)
-      .then(res => {
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          const sorted = res.data.sort((a: any, b: any) => a.order - b.order);
-          setInternships(sorted);
-          setActiveItem(sorted[0].id);
-        }
-      })
-      .catch(err => {
-        console.error("Error loading internships:", err);
-      });
+    const fetchInternships = () => {
+      axios.get(`${API_BASE}/api/internships`)
+        .then(res => {
+          if (Array.isArray(res.data) && res.data.length > 0) {
+            const sorted = res.data.sort((a: any, b: any) => a.order - b.order);
+            setInternships(sorted);
+            // Only overwrite activeItem on initial load or if the currently selected one is deleted
+            setActiveItem(prev => {
+              const stillExists = sorted.some((item: any) => item.id === prev);
+              return stillExists ? prev : sorted[0].id;
+            });
+          }
+        })
+        .catch(err => {
+          console.error("Error loading internships:", err);
+        });
+    };
+
+    fetchInternships();
+
+    window.addEventListener('refetchPortfolioData', fetchInternships);
+    const interval = setInterval(fetchInternships, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchInternships);
+      clearInterval(interval);
+    };
   }, []);
 
   const toggleItem = (id: string) => {

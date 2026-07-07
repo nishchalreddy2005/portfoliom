@@ -24,39 +24,51 @@ export default function MenuDrawer({ isOpen, onClose, activeSection, toggles = {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/content`)
-      .then(res => res.json())
-      .then((data: any[]) => {
-        if (Array.isArray(data)) {
-          const getVal = (key: string, def: string) => {
-            const found = data.find(item => item.key === key);
-            return found && found.value !== undefined ? found.value : def;
-          };
+    const fetchMenuContent = () => {
+      fetch(`${API_BASE}/api/content`)
+        .then(res => res.json())
+        .then((data: any[]) => {
+          if (Array.isArray(data)) {
+            const getVal = (key: string, def: string) => {
+              const found = data.find(item => item.key === key);
+              return found && found.value !== undefined ? found.value : def;
+            };
 
-          setContactEmail(getVal('contact_email', 'gvrnishchalreddy@gmail.com'));
-          setContactPhone(getVal('contact_phone', '+91 7013612696'));
-          setContactAddress(getVal('contact_address', 'Hyderabad, Telangana, India'));
-          setOrbUrl(getVal('hero_orb_url', ''));
+            setContactEmail(getVal('contact_email', 'gvrnishchalreddy@gmail.com'));
+            setContactPhone(getVal('contact_phone', '+91 7013612696'));
+            setContactAddress(getVal('contact_address', 'Hyderabad, Telangana, India'));
+            setOrbUrl(getVal('hero_orb_url', ''));
 
-          const updated = SOCIAL_LINKS.map(link => {
-            if (link.name === "LinkedIn") {
-              const found = data.find(item => item.key === 'hero_linkedin_url');
-              if (found && found.value) return { ...link, url: found.value };
-            }
-            if (link.name === "GitHub") {
-              const found = data.find(item => item.key === 'hero_github_url');
-              if (found && found.value) return { ...link, url: found.value };
-            }
-            if (link.name === "E-Mail") {
-              const found = data.find(item => item.key === 'contact_email');
-              if (found && found.value) return { ...link, url: `mailto:${found.value}` };
-            }
-            return link;
-          });
-          setSocialLinks(updated);
-        }
-      })
-      .catch(err => console.error("Error loading social links in MenuDrawer:", err));
+            const updated = SOCIAL_LINKS.map(link => {
+              if (link.name === "LinkedIn") {
+                const found = data.find(item => item.key === 'hero_linkedin_url');
+                if (found && found.value) return { ...link, url: found.value };
+              }
+              if (link.name === "GitHub") {
+                const found = data.find(item => item.key === 'hero_github_url');
+                if (found && found.value) return { ...link, url: found.value };
+              }
+              if (link.name === "E-Mail") {
+                const found = data.find(item => item.key === 'contact_email');
+                if (found && found.value) return { ...link, url: `mailto:${found.value}` };
+              }
+              return link;
+            });
+            setSocialLinks(updated);
+          }
+        })
+        .catch(err => console.error("Error loading social links in MenuDrawer:", err));
+    };
+
+    fetchMenuContent();
+
+    window.addEventListener('refetchPortfolioData', fetchMenuContent);
+    const interval = setInterval(fetchMenuContent, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchMenuContent);
+      clearInterval(interval);
+    };
   }, []);
 
   const baseMenuItems = [

@@ -32,57 +32,69 @@ export default function Contact() {
   const [consultationsDescription, setConsultationsDescription] = useState("Have an idea, brief, or active technical requirement? Drop me a message or write directly to my inbox. I usually reply within 24 hours.");
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/content`)
-      .then(res => res.json())
-      .then((data: any[]) => {
-        if (Array.isArray(data)) {
-          const updated = SOCIAL_LINKS.map(link => {
-            if (link.name === "LinkedIn") {
-              const found = data.find(item => item.key === 'hero_linkedin_url');
-              if (found && found.value) return { ...link, url: found.value };
+    const fetchContact = () => {
+      fetch(`${API_BASE}/api/content`)
+        .then(res => res.json())
+        .then((data: any[]) => {
+          if (Array.isArray(data)) {
+            const updated = SOCIAL_LINKS.map(link => {
+              if (link.name === "LinkedIn") {
+                const found = data.find(item => item.key === 'hero_linkedin_url');
+                if (found && found.value) return { ...link, url: found.value };
+              }
+              if (link.name === "GitHub") {
+                const found = data.find(item => item.key === 'hero_github_url');
+                if (found && found.value) return { ...link, url: found.value };
+              }
+              return link;
+            });
+            setSocialLinks(updated);
+
+            // Contact settings mapping
+            const getVal = (key: string, def: string) => {
+              const found = data.find(item => item.key === key);
+              return found && found.value !== undefined ? found.value : def;
+            };
+
+            setAvailabilityStatus(getVal('contact_availability_status', 'Available for Opportunities'));
+            setAvailabilityColor(getVal('contact_availability_color', 'green'));
+            setResponseTime(getVal('contact_response_time', '< 24 Hours'));
+            setLocation(getVal('contact_location', 'Hyderabad, India'));
+            setContactEmail(getVal('contact_email', 'gvrnishchalreddy@gmail.com'));
+            setContactPhone(getVal('contact_phone', '+91 7013612696'));
+            setContactAddress(getVal('contact_address', 'Hyderabad, Telangana, India'));
+            setFooterTitle(getVal('contact_footer_title', "Let's Build Something Exceptional Together"));
+            setFooterSubtitle(getVal('contact_footer_subtitle', 'Available for Opportunities in Software Engineering & Full Stack Development'));
+            setConsultationsLabel(getVal('contact_consultations_label', '// CONSULTATIONS'));
+            setConsultationsTitle(getVal('contact_consultations_title', "Let's talk\nabout your\nproject."));
+            setConsultationsDescription(getVal('contact_consultations_description', 'Have an idea, brief, or active technical requirement? Drop me a message or write directly to my inbox. I usually reply within 24 hours.'));
+
+            const focusVal = getVal('contact_focus_tags', '');
+            if (focusVal) {
+              setFocusTags(focusVal.split(',').map((t: string) => t.trim()));
+            } else {
+              setFocusTags([]);
             }
-            if (link.name === "GitHub") {
-              const found = data.find(item => item.key === 'hero_github_url');
-              if (found && found.value) return { ...link, url: found.value };
+            const rolesVal = getVal('contact_preferred_roles', '');
+            if (rolesVal) {
+              setPreferredRoles(rolesVal.split(',').map((t: string) => t.trim()));
+            } else {
+              setPreferredRoles([]);
             }
-            return link;
-          });
-          setSocialLinks(updated);
-
-          // Contact settings mapping
-          const getVal = (key: string, def: string) => {
-            const found = data.find(item => item.key === key);
-            return found && found.value !== undefined ? found.value : def;
-          };
-
-          setAvailabilityStatus(getVal('contact_availability_status', 'Available for Opportunities'));
-          setAvailabilityColor(getVal('contact_availability_color', 'green'));
-          setResponseTime(getVal('contact_response_time', '< 24 Hours'));
-          setLocation(getVal('contact_location', 'Hyderabad, India'));
-          setContactEmail(getVal('contact_email', 'gvrnishchalreddy@gmail.com'));
-          setContactPhone(getVal('contact_phone', '+91 7013612696'));
-          setContactAddress(getVal('contact_address', 'Hyderabad, Telangana, India'));
-          setFooterTitle(getVal('contact_footer_title', "Let's Build Something Exceptional Together"));
-          setFooterSubtitle(getVal('contact_footer_subtitle', 'Available for Opportunities in Software Engineering & Full Stack Development'));
-          setConsultationsLabel(getVal('contact_consultations_label', '// CONSULTATIONS'));
-          setConsultationsTitle(getVal('contact_consultations_title', "Let's talk\nabout your\nproject."));
-          setConsultationsDescription(getVal('contact_consultations_description', 'Have an idea, brief, or active technical requirement? Drop me a message or write directly to my inbox. I usually reply within 24 hours.'));
-
-          const focusVal = getVal('contact_focus_tags', '');
-          if (focusVal) {
-            setFocusTags(focusVal.split(',').map((t: string) => t.trim()));
-          } else {
-            setFocusTags([]);
           }
-          const rolesVal = getVal('contact_preferred_roles', '');
-          if (rolesVal) {
-            setPreferredRoles(rolesVal.split(',').map((t: string) => t.trim()));
-          } else {
-            setPreferredRoles([]);
-          }
-        }
-      })
-      .catch(err => console.error("Error loading social links in Contact:", err));
+        })
+        .catch(err => console.error("Error loading social links in Contact:", err));
+    };
+
+    fetchContact();
+
+    window.addEventListener('refetchPortfolioData', fetchContact);
+    const interval = setInterval(fetchContact, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchContact);
+      clearInterval(interval);
+    };
   }, []);
 
   // Floating label focus states

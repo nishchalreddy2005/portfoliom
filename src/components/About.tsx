@@ -40,26 +40,38 @@ export default function About({ toggles }: AboutProps) {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/content`)
-      .then(res => res.json())
-      .then((data: any[]) => {
-        if (Array.isArray(data)) {
-          const mapped: any = { ...aboutData };
-          let hasAboutData = false;
-          data.forEach(item => {
-            if (item.key.startsWith('about_')) {
-              hasAboutData = true;
-              if (item.key in aboutData) {
-                mapped[item.key] = item.value || '';
+    const fetchAbout = () => {
+      fetch(`${API_BASE}/api/content`)
+        .then(res => res.json())
+        .then((data: any[]) => {
+          if (Array.isArray(data)) {
+            const mapped: any = { ...aboutData };
+            let hasAboutData = false;
+            data.forEach(item => {
+              if (item.key.startsWith('about_')) {
+                hasAboutData = true;
+                if (item.key in aboutData) {
+                  mapped[item.key] = item.value || '';
+                }
               }
+            });
+            if (hasAboutData) {
+              setAboutData(mapped);
             }
-          });
-          if (hasAboutData) {
-            setAboutData(mapped);
           }
-        }
-      })
-      .catch(err => console.error("Error loading about content:", err));
+        })
+        .catch(err => console.error("Error loading about content:", err));
+    };
+
+    fetchAbout();
+
+    window.addEventListener('refetchPortfolioData', fetchAbout);
+    const interval = setInterval(fetchAbout, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchAbout);
+      clearInterval(interval);
+    };
   }, []);
 
   const pillars = [

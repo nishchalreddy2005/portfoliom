@@ -229,28 +229,42 @@ export default function SkillsSection() {
   const [isMemoryOpen, setIsMemoryOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/content`)
-      .then(res => res.json())
-      .then((data: any[]) => {
-        if (Array.isArray(data)) {
-          const skillsItem = data.find(item => item.key === 'skills_data');
-          if (skillsItem && skillsItem.value) {
-            const parsed = JSON.parse(skillsItem.value);
-            const withIcons = parsed.map((cat: any) => ({
-              ...cat,
-              skills: cat.skills.map((skill: any) => ({
-                ...skill,
-                icon: getSkillIcon(skill.iconName || skill.name)
-              }))
-            }));
-            setCategories(withIcons);
-            if (withIcons.length > 0) {
-              setActiveCategory(withIcons[0].id);
+    const fetchSkills = () => {
+      fetch(`${API_BASE}/api/content`)
+        .then(res => res.json())
+        .then((data: any[]) => {
+          if (Array.isArray(data)) {
+            const skillsItem = data.find(item => item.key === 'skills_data');
+            if (skillsItem && skillsItem.value) {
+              const parsed = JSON.parse(skillsItem.value);
+              const withIcons = parsed.map((cat: any) => ({
+                ...cat,
+                skills: cat.skills.map((skill: any) => ({
+                  ...skill,
+                  icon: getSkillIcon(skill.iconName || skill.name)
+                }))
+              }));
+              setCategories(withIcons);
+              // Only overwrite activeCategory on initial load or if the currently selected one is deleted
+              setActiveCategory(prev => {
+                const stillExists = withIcons.some(c => c.id === prev);
+                return stillExists ? prev : (withIcons[0]?.id || "frontend");
+              });
             }
           }
-        }
-      })
-      .catch(err => console.error("Error loading skills in client:", err));
+        })
+        .catch(err => console.error("Error loading skills in client:", err));
+    };
+
+    fetchSkills();
+
+    window.addEventListener('refetchPortfolioData', fetchSkills);
+    const interval = setInterval(fetchSkills, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchSkills);
+      clearInterval(interval);
+    };
   }, []);
 
   const activeCatData = categories.find(c => c.id === activeCategory);

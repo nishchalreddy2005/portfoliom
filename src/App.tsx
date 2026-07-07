@@ -34,20 +34,32 @@ function MainPortfolio() {
 
   // Fetch toggles from the database
   useEffect(() => {
-    fetch(`${API_BASE}/api/content`)
-      .then(res => res.json())
-      .then((data: any[]) => {
-        if (Array.isArray(data)) {
-          const newToggles = { ...toggles };
-          data.forEach(item => {
-            if (item.key.startsWith('toggle_')) {
-              newToggles[item.key.replace('toggle_', '')] = item.value === 'true';
-            }
-          });
-          setToggles(newToggles);
-        }
-      })
-      .catch(err => console.error("Error loading toggles:", err));
+    const fetchToggles = () => {
+      fetch(`${API_BASE}/api/content`)
+        .then(res => res.json())
+        .then((data: any[]) => {
+          if (Array.isArray(data)) {
+            const newToggles = { ...toggles };
+            data.forEach(item => {
+              if (item.key.startsWith('toggle_')) {
+                newToggles[item.key.replace('toggle_', '')] = item.value === 'true';
+              }
+            });
+            setToggles(newToggles);
+          }
+        })
+        .catch(err => console.error("Error loading toggles:", err));
+    };
+
+    fetchToggles();
+
+    window.addEventListener('refetchPortfolioData', fetchToggles);
+    const interval = setInterval(fetchToggles, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchToggles);
+      clearInterval(interval);
+    };
   }, []);
 
   // Multi-step Loading progress emulator for boutique brand entry effect
@@ -200,12 +212,18 @@ export default function App() {
       }
     };
 
+    const handleFocus = () => {
+      window.dispatchEvent(new Event('refetchPortfolioData'));
+    };
+
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('dragstart', handleDragStart);
+    window.addEventListener('focus', handleFocus);
 
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('dragstart', handleDragStart);
+      window.removeEventListener('focus', handleFocus);
     };
   }, []);
 

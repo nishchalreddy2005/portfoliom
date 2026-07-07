@@ -105,22 +105,34 @@ export default function MemoryGame() {
 
   // Load skills from database
   useEffect(() => {
-    fetch(`${API_BASE}/api/content`)
-      .then(res => res.json())
-      .then((data: any[]) => {
-        if (Array.isArray(data)) {
-          const skillsItem = data.find(item => item.key === 'skills_data');
-          if (skillsItem && skillsItem.value) {
-            const parsed = JSON.parse(skillsItem.value);
-            // Flatten all skills across categories
-            const allSkills = parsed.flatMap((cat: any) => cat.skills || []);
-            if (allSkills.length > 0) {
-              setDbSkills(allSkills);
+    const fetchSkillsForGame = () => {
+      fetch(`${API_BASE}/api/content`)
+        .then(res => res.json())
+        .then((data: any[]) => {
+          if (Array.isArray(data)) {
+            const skillsItem = data.find(item => item.key === 'skills_data');
+            if (skillsItem && skillsItem.value) {
+              const parsed = JSON.parse(skillsItem.value);
+              // Flatten all skills across categories
+              const allSkills = parsed.flatMap((cat: any) => cat.skills || []);
+              if (allSkills.length > 0) {
+                setDbSkills(allSkills);
+              }
             }
           }
-        }
-      })
-      .catch(err => console.error("Error loading skills in Memory Game:", err));
+        })
+        .catch(err => console.error("Error loading skills in Memory Game:", err));
+    };
+
+    fetchSkillsForGame();
+
+    window.addEventListener('refetchPortfolioData', fetchSkillsForGame);
+    const interval = setInterval(fetchSkillsForGame, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchSkillsForGame);
+      clearInterval(interval);
+    };
   }, []);
 
   // Initialize and shuffle deck

@@ -199,20 +199,31 @@ export default function BeyondCode() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/achievements`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          // Sort by order asc
-          const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-          setAchievements(sorted);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error loading achievements:", err);
-        setLoading(false);
-      });
+    const fetchAchievements = () => {
+      fetch(`${API_BASE}/api/achievements`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+            setAchievements(sorted);
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error loading achievements:", err);
+          setLoading(false);
+        });
+    };
+
+    fetchAchievements();
+
+    window.addEventListener('refetchPortfolioData', fetchAchievements);
+    const interval = setInterval(fetchAchievements, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchAchievements);
+      clearInterval(interval);
+    };
   }, []);
 
   const activeAchievement = achievements.find(a => a.id === selectedId);

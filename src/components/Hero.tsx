@@ -18,28 +18,40 @@ export default function Hero() {
   });
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/content`)
-      .then(res => res.json())
-      .then((data: any[]) => {
-        if (Array.isArray(data)) {
-          const mapped: any = { ...heroData };
-          let hasHeroData = false;
-          data.forEach(item => {
-            if (item.key.startsWith('hero_')) {
-              hasHeroData = true;
-              if (item.key === 'hero_ticker_words') {
-                mapped[item.key] = item.value ? item.value.split(',').map((w: string) => w.trim()) : [];
-              } else if (item.key in heroData) {
-                mapped[item.key] = item.value || '';
+    const fetchHero = () => {
+      fetch(`${API_BASE}/api/content`)
+        .then(res => res.json())
+        .then((data: any[]) => {
+          if (Array.isArray(data)) {
+            const mapped: any = { ...heroData };
+            let hasHeroData = false;
+            data.forEach(item => {
+              if (item.key.startsWith('hero_')) {
+                hasHeroData = true;
+                if (item.key === 'hero_ticker_words') {
+                  mapped[item.key] = item.value ? item.value.split(',').map((w: string) => w.trim()) : [];
+                } else if (item.key in heroData) {
+                  mapped[item.key] = item.value || '';
+                }
               }
+            });
+            if (hasHeroData) {
+              setHeroData(mapped);
             }
-          });
-          if (hasHeroData) {
-            setHeroData(mapped);
           }
-        }
-      })
-      .catch(err => console.error("Error loading hero content:", err));
+        })
+        .catch(err => console.error("Error loading hero content:", err));
+    };
+
+    fetchHero();
+
+    window.addEventListener('refetchPortfolioData', fetchHero);
+    const interval = setInterval(fetchHero, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchHero);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleScrollToAbout = () => {

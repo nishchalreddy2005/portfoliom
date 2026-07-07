@@ -71,16 +71,28 @@ export default function Insights() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/insights`)
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setItems(data.sort((a, b) => a.order - b.order));
-        }
-      })
-      .catch(err => {
-        console.error("Failed to fetch insights:", err);
-      });
+    const fetchInsights = () => {
+      fetch(`${API_BASE}/api/insights`)
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            setItems(data.sort((a, b) => a.order - b.order));
+          }
+        })
+        .catch(err => {
+          console.error("Failed to fetch insights:", err);
+        });
+    };
+
+    fetchInsights();
+
+    window.addEventListener('refetchPortfolioData', fetchInsights);
+    const interval = setInterval(fetchInsights, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchInsights);
+      clearInterval(interval);
+    };
   }, []);
 
   // Keyboard navigation (<- and ->)

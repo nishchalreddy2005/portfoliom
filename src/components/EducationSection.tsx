@@ -307,18 +307,34 @@ export default function EducationSection() {
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/education`)
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          const sorted = data.sort((a, b) => a.order - b.order);
-          setItems(sorted);
-          setSelectedEducation(sorted[0].id);
-        }
-      })
-      .catch(err => {
-        console.error("Failed to fetch education details:", err);
-      });
+    const fetchEducation = () => {
+      fetch(`${API_BASE}/api/education`)
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            const sorted = data.sort((a, b) => a.order - b.order);
+            setItems(sorted);
+            // Only overwrite selectedEducation on initial load or if the currently selected one is deleted
+            setSelectedEducation(prev => {
+              const stillExists = sorted.some(item => item.id === prev);
+              return stillExists ? prev : sorted[0].id;
+            });
+          }
+        })
+        .catch(err => {
+          console.error("Failed to fetch education details:", err);
+        });
+    };
+
+    fetchEducation();
+
+    window.addEventListener('refetchPortfolioData', fetchEducation);
+    const interval = setInterval(fetchEducation, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchEducation);
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {

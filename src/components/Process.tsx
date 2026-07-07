@@ -52,29 +52,39 @@ export default function Process() {
   }, [activeStepIdx, processSteps, isDesktop]);
 
   useEffect(() => {
-    // Fetch process steps (projects) from the backend API
-    axios.get(`${API_BASE}/api/projects`)
-      .then(response => {
-        // Map the backend projects structure back to process steps for the UI
-        const data = response.data.map((proj: any, idx: number) => ({
-          id: proj.id,
-          num: `0${idx + 1}`,
-          title: proj.title,
-          description: proj.description,
-          details: proj.tags || [],
-          metrics: proj.metrics || [],
-          image: proj.image,
-          demoUrl: proj.demoUrl || undefined,
-          githubUrl: proj.githubUrl || undefined,
-          paperUrl: proj.paperUrl || undefined,
-        }));
-        setProcessSteps(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Error fetching projects:", error);
-        setLoading(false);
-      });
+    const fetchProjects = () => {
+      axios.get(`${API_BASE}/api/projects`)
+        .then(response => {
+          const data = response.data.map((proj: any, idx: number) => ({
+            id: proj.id,
+            num: `0${idx + 1}`,
+            title: proj.title,
+            description: proj.description,
+            details: proj.tags || [],
+            metrics: proj.metrics || [],
+            image: proj.image,
+            demoUrl: proj.demoUrl || undefined,
+            githubUrl: proj.githubUrl || undefined,
+            paperUrl: proj.paperUrl || undefined,
+          }));
+          setProcessSteps(data);
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error("Error fetching projects:", error);
+          setLoading(false);
+        });
+    };
+
+    fetchProjects();
+
+    window.addEventListener('refetchPortfolioData', fetchProjects);
+    const interval = setInterval(fetchProjects, 10000);
+
+    return () => {
+      window.removeEventListener('refetchPortfolioData', fetchProjects);
+      clearInterval(interval);
+    };
   }, []);
 
   if (loading) return null;
